@@ -33,3 +33,21 @@ export function getUserList(page, pageSize) {
     }
   })
 }
+
+export function editSubmit(data) {
+  return request({
+    url: '/userCenter/modifyUser',
+    method: 'post',
+    data
+  })
+}
+
+export function deleteUser(id) {
+  return request({
+    url: '/userCenter/delUser',
+    method: 'post',
+    data: {
+      id
+    }
+  })
+}

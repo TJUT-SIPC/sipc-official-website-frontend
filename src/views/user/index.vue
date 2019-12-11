@@ -13,7 +13,7 @@
 								{{ scope.row.name }}
                 <ul class="operate-inline">
                   <li @click="editUser(scope)">快速编辑</li>
-                  <li>删除</li>
+                  <li @click="deleteUser(scope)">删除</li>
                   <div class="clear"></div>
                 </ul>
               </el-col>
@@ -27,16 +27,16 @@
       </el-table-column>
       <el-table-column prop="phone" label="手机号" width="200" />
     </el-table>
-    <el-dialog title="快速编辑" :visible.sync="dialogVisible">
-      <el-form ref="editDialogData" :model="editDialogData" label-width="80px">
+    <el-dialog title="快速编辑" :visible.sync="editVisible">
+      <el-form ref="editData" :model="editData" v-loading="editLoading" label-width="80px">
         <el-form-item label="用户名">
-          <el-input v-model="editDialogData.name" placeholder="请输入用户名"></el-input>
+          <el-input v-model="editData.name" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item label="邮箱">
-          <el-input v-model="editDialogData.email" placeholder="请输入邮箱"></el-input>
+          <el-input v-model="editData.email" placeholder="请输入邮箱"></el-input>
         </el-form-item>
         <el-form-item label="权限">
-          <el-select v-model="editDialogData.status" placeholder="请选择">
+          <el-select v-model="editData.status" placeholder="请选择">
             <el-option
               v-for="item in status"
               :key="item"
@@ -46,12 +46,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="手机号">
-          <el-input v-model="editDialogData.phone" placeholder="请输入手机号"></el-input>
+          <el-input v-model="editData.phone" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item>
           <el-row :gutter="4">
             <el-col :span="12">
-              <el-button type="primary" @click="dialogSubmit" style="width: 100%">提交</el-button>
+              <el-button type="primary" @click="editSubmit" style="width: 100%">提交</el-button>
             </el-col>
             <el-col :span="12">
               <el-button type="primary" @click="dialogCancel" style="width: 100%">取消</el-button>
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { getUserList } from '@/api/user'
+import { getUserList, editSubmit, deleteUser } from '@/api/user'
 export default {
   name: 'UserTable',
   filters: {
@@ -92,10 +92,12 @@ export default {
       current_page: 1, // 当前页数
       total: 0, // 总用户条数
       inline_operate: [], // 表格内联操作是否显示
-      dialogVisible: false,
+      editVisible: false,
+      editLoading: false,
       status: [0, 1, 2],
-      editDialogData: {
+      editData: {
         name: '',
+        password: '',
         email: '',
         status: 0
       },
@@ -134,17 +136,26 @@ export default {
 			this.$router.replace('?page=' + page)
     },
     editUser(scope) {
-      this.editDialogData.name = scope.row.name
-      this.editDialogData.email = scope.row.email
-      this.editDialogData.status = scope.row.status
-      this.editDialogData.phone = scope.row.phone
-      this.dialogVisible = true
+      this.editData.name = scope.row.name
+      this.editData.email = scope.row.email
+      this.editData.status = scope.row.status
+      this.editData.phone = scope.row.phone
+      this.editData.password = scope.row.password
+      this.editVisible = true
     },
-    dialogSubmit() {
-      
+    async deleteUser(scope) {
+      let req = await deleteUser(scope.row.id)
+      this.users_list.splice(scope.$index, 1)
+    },
+    async editSubmit() {
+      this.editLoading = true
+      let req = await editSubmit(this.editData)
+      console.log(req)
+      this.editLoading = false
+      this.editVisible = false
     },
     dialogCancel() {
-      this.dialogVisible = false
+      this.editVisible = false
     }
 	},
 	beforeRouteUpdate(to, from, next) {

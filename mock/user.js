@@ -122,5 +122,29 @@ export default [
       msg.data.users_list = [...data.data.users_list].splice((page - 1) * pageSize, pageSize)
       return msg
     }
+  },
+
+  {
+    url: '/userCenter/modifyUser',
+    type: 'post',
+    response: () => {
+      return {
+        'code': 0,
+        'msg': 'success',
+        'data': null
+      }
+    }
+  },
+
+  {
+    url: '/userCenter/delUser',
+    type: 'post',
+    response: () => {
+      return {
+        "code":0,
+        "msg":"success",
+        "data":null
+      }
+    }
   }
 ]
