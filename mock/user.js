@@ -12,10 +12,11 @@ const data = Mock.mock({
   'code': 0,
   'msg': 'success',
   'data': {
+    'total': 27,
     'users_list|27': [
       {
         'id|+1': 10000, // 用户id
-        'name': 'admin', // 用户名
+        'name|+1': 0, // 用户名
         'password': '123456', // 用户密码
         'age': 18, // 年龄
         'gender': '女', // 性别
@@ -25,9 +26,7 @@ const data = Mock.mock({
         'last_login': '2019-12-05', // 用户最后登录时间
         'status': 0, // 权限，0为普通用户，1管理员，2超级管理员
         'remark': '用户备注',
-        'head_image': 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
-        'current_page': 25, // 当前页数
-        'total_page': 50 // 总页数
+        'head_image': 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png'
       }
     ]
   }
@@ -111,7 +110,17 @@ export default [
     url: '/userCenter/getUsers',
     type: 'get',
     response: config => {
-      return data
+      const { page, pageSize } = config.query
+      const msg = {
+        'code': 0,
+        'msg': 'success',
+        'data': {
+          total: data.data.total,
+          users_list: []
+        }
+      }
+      msg.data.users_list = [...data.data.users_list].splice((page - 1) * pageSize, pageSize)
+      return msg
     }
   }
 ]
