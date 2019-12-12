@@ -13,7 +13,7 @@
 								{{ scope.row.name }}
                 <ul class="operate-inline">
                   <li @click="editUser(scope)">快速编辑</li>
-                  <li @click="deleteUser(scope)">删除</li>
+                  <li @click="openDeletePrompt(scope)">删除</li>
                   <div class="clear"></div>
                 </ul>
               </el-col>
@@ -28,14 +28,14 @@
       <el-table-column prop="phone" label="手机号" width="200" />
     </el-table>
     <el-dialog title="快速编辑" :visible.sync="editVisible">
-      <el-form ref="editData" :model="editData" v-loading="editLoading" label-width="80px">
-        <el-form-item label="用户名">
+      <el-form ref="editData" :model="editData" :rules="editDataRules" v-loading="editLoading" label-width="80px">
+        <el-form-item prop="name" label="用户名">
           <el-input v-model="editData.name" placeholder="请输入用户名"></el-input>
         </el-form-item>
-        <el-form-item label="邮箱">
+        <el-form-item prop="email" label="邮箱">
           <el-input v-model="editData.email" placeholder="请输入邮箱"></el-input>
         </el-form-item>
-        <el-form-item label="权限">
+        <el-form-item prop="status" label="权限">
           <el-select v-model="editData.status" placeholder="请选择">
             <el-option
               v-for="item in status"
@@ -45,7 +45,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="手机号">
+        <el-form-item prop="phone" label="手机号">
           <el-input v-model="editData.phone" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item>
@@ -54,11 +54,18 @@
               <el-button type="primary" @click="editSubmit" style="width: 100%">提交</el-button>
             </el-col>
             <el-col :span="12">
-              <el-button type="primary" @click="dialogCancel" style="width: 100%">取消</el-button>
+              <el-button type="primary" @click="editCancel" style="width: 100%">取消</el-button>
             </el-col>
           </el-row>
         </el-form-item>
       </el-form>
+    </el-dialog>
+    <el-dialog title="提示" :visible.sync="deletePrompt">
+      <span>确认删除？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="deletePrompt = false">取 消</el-button>
+        <el-button type="primary" @click="deleteUser">确 定</el-button>
+      </span>
     </el-dialog>
 		<el-pagination
       :page-size="page_size"
@@ -73,6 +80,7 @@
 
 <script>
 import { getUserList, editSubmit, deleteUser } from '@/api/user'
+import editDataRules from './rules/index'
 export default {
   name: 'UserTable',
   filters: {
@@ -92,22 +100,30 @@ export default {
       current_page: 1, // 当前页数
       total: 0, // 总用户条数
       inline_operate: [], // 表格内联操作是否显示
-      editVisible: false,
-      editLoading: false,
-      status: [0, 1, 2],
-      editData: {
+      editVisible: false, // 快速编辑界面是否显示
+      editLoading: false, // 快速编辑界面是否处于加载中
+      editDataRules,
+      status: [0, 1, 2], // 权限
+      editData: { // 快速编辑中的表单
         name: '',
         password: '',
         email: '',
-        status: 0
+        phone: '',
+        status: 0,
+        $index: 0
+      },
+      deletePrompt: false, // 内联删除成员提醒界面
+      deletePrompt_data: {
+        $index: 0,
+        id: 0
       },
       users_list: []
     }
   },
   created() {
-    this.current_page = this.$route.query.page?Number(this.$route.query.page):1
+    this.current_page = this.$route.query.page ? Number(this.$route.query.page) : 1
     // 没有匹配到相当于第一页
-    if(!this.$route.query.page || Number(this.$route.query.page) === 1) {
+    if (!this.$route.query.page || Number(this.$route.query.page) === 1) {
       this.displayUserList(1, this.page_size)
     } else {
       this.displayUserList(this.$route.query.page, this.page_size)
@@ -123,7 +139,7 @@ export default {
           item.$index = key
           this.users_list.push(item)
         })
-				this.total = Number(data.data.total)
+        this.total = Number(data.data.total)
       })
     },
     openInlineOperate(scope) {
@@ -131,9 +147,9 @@ export default {
     },
     closeInlineOperate(scope) {
       document.getElementsByClassName('operate-inline')[scope.$index].style.display = 'none'
-		},
-		pageChange(page) {
-			this.$router.replace('?page=' + page)
+    },
+    pageChange(page) {
+      this.$router.replace('?page=' + page)
     },
     editUser(scope) {
       this.editData.name = scope.row.name
@@ -143,26 +159,39 @@ export default {
       this.editData.password = scope.row.password
       this.editVisible = true
     },
-    async deleteUser(scope) {
-      let req = await deleteUser(scope.row.id)
-      this.users_list.splice(scope.$index, 1)
+    openDeletePrompt(scope) {
+      this.deletePrompt = true
+      this.deletePrompt_data.$index = scope.$index
+      this.deletePrompt_data.id = scope.row.id
+    },
+    async deleteUser() {
+      const req = await deleteUser(this.deletePrompt_data.id)
+      this.users_list.splice(this.deletePrompt_data.$index, 1)
+      this.deletePrompt = false
     },
     async editSubmit() {
       this.editLoading = true
-      let req = await editSubmit(this.editData)
-      console.log(req)
+      const req = await editSubmit(this.editData)
+      Object.keys(this.editData).forEach(item => {
+        if (item !== '$index') {
+          this.users_list[this.editData.$index][item] = this.editData[item]
+        }
+      })
       this.editLoading = false
       this.editVisible = false
     },
-    dialogCancel() {
+    editCancel() {
       this.editVisible = false
     }
-	},
-	beforeRouteUpdate(to, from, next) {
+  },
+  beforeRouteUpdate(to, from, next) {
     this.users_list = []
     this.displayUserList(to.query.page, this.page_size)
-    this.current_page = to.query.page?Number(to.query.page):1
-		next()
+    if (to.query.page) {
+      this.current_page = Number(to.query.page)
+    } else {
+      this.current_page = 1
+    } next()
   }
 }
 </script>
