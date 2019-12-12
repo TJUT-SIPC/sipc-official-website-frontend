@@ -170,15 +170,21 @@ export default {
       this.deletePrompt = false
     },
     async editSubmit() {
-      this.editLoading = true
-      const req = await editSubmit(this.editData)
-      Object.keys(this.editData).forEach(item => {
-        if (item !== '$index') {
-          this.users_list[this.editData.$index][item] = this.editData[item]
+      this.$refs['editData'].validate(async(valid) => {
+        if (valid) {
+          this.editLoading = true
+          const req = await editSubmit(this.editData)
+          Object.keys(this.editData).forEach(item => {
+            if (item !== '$index') {
+              this.users_list[this.editData.$index][item] = this.editData[item]
+            }
+          })
+          this.editLoading = false
+          this.editVisible = false
+        } else {
+          return false
         }
       })
-      this.editLoading = false
-      this.editVisible = false
     },
     editCancel() {
       this.editVisible = false
