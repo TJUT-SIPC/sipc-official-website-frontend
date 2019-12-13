@@ -23,13 +23,14 @@ export function logout() {
   })
 }
 
-export function getUserList(page, pageSize) {
+export function getUserList(page, pageSize, status) {
   return request({
     url: '/userCenter/getUsers',
     method: 'get',
     params: {
       page,
-      pageSize
+      pageSize,
+      status
     }
   })
 }
@@ -48,6 +49,16 @@ export function deleteUser(id) {
     method: 'post',
     data: {
       id
+    }
+  })
+}
+
+export function uploadHeadImage(file) {
+  return request({
+    url: '/uploadHeadImage',
+    method: 'post',
+    data: {
+      file
     }
   })
 }

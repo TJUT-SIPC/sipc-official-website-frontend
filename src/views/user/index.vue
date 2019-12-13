@@ -10,7 +10,7 @@
                 <img class="head_image" :src="scope.row.head_image" alt />
               </el-col>
               <el-col :span="20">
-								{{ scope.row.name }}
+								{{ scope.row.username }}
                 <ul class="operate-inline">
                   <li @click="editUser(scope)">快速编辑</li>
                   <li @click="openDeletePrompt(scope)">删除</li>
@@ -29,8 +29,8 @@
     </el-table>
     <el-dialog title="快速编辑" :visible.sync="editVisible">
       <el-form ref="editData" :model="editData" :rules="editDataRules" v-loading="editLoading" label-width="80px">
-        <el-form-item prop="name" label="用户名">
-          <el-input v-model="editData.name" placeholder="请输入用户名"></el-input>
+        <el-form-item prop="username" label="用户名">
+          <el-input v-model="editData.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <el-form-item prop="email" label="邮箱">
           <el-input v-model="editData.email" placeholder="请输入邮箱"></el-input>
@@ -81,18 +81,11 @@
 <script>
 import { getUserList, editSubmit, deleteUser } from '@/api/user'
 import editDataRules from './rules/index'
+import { statusFilter } from './filter/index'
 export default {
-  name: 'UserTable',
+  username: 'UserTable',
   filters: {
-    statusFilter(data) {
-      if (data === 0) {
-        return '普通用户'
-      } else if (data === 1) {
-        return '管理员'
-      } else if (data === 2) {
-        return '超级管理员'
-      }
-    }
+    statusFilter
   },
   data() {
     return {
@@ -105,7 +98,7 @@ export default {
       editDataRules,
       status: [0, 1, 2], // 权限
       editData: { // 快速编辑中的表单
-        name: '',
+        username: '',
         password: '',
         email: '',
         phone: '',
@@ -133,8 +126,8 @@ export default {
     }
   },
   methods: {
-    displayUserList(page, pageSize) {
-      getUserList(page, pageSize).then(data => {
+    displayUserList(page, pageSize, status) {
+      getUserList(page, pageSize, status).then(data => {
         data.data.users_list.forEach((item, key) => {
           item.$index = key
           this.users_list.push(item)
@@ -152,7 +145,7 @@ export default {
       this.$router.replace('?page=' + page)
     },
     editUser(scope) {
-      this.editData.name = scope.row.name
+      this.editData.username = scope.row.username
       this.editData.email = scope.row.email
       this.editData.status = scope.row.status
       this.editData.phone = scope.row.phone
@@ -192,7 +185,7 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     this.users_list = []
-    this.displayUserList(to.query.page, this.page_size)
+    this.displayUserList(to.query.page, this.page_size, 0)
     if (to.query.page) {
       this.current_page = Number(to.query.page)
     } else {
@@ -209,6 +202,8 @@ export default {
 				display: none;
     }
     .operate-inline li{
+        height: 14px;
+        line-height: 14px;
         list-style: none;
         float: left;
         font-size: 14px;

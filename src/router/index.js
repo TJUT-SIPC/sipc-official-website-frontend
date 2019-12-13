@@ -57,12 +57,23 @@ export const constantRoutes = [
   {
     path: '/user',
     component: Layout,
-    children: [{
-      path: 'allUser',
-      name: 'user',
-      component: () => import('@/views/user/index'),
-      meta: { title: '所有用户', icon: 'dashboard' }
-    }]
+    redirect: 'allUser',
+    meta: { title: '用户', icon: 'dashboard' },
+    children: [
+      {
+        path: 'allUser',
+        name: 'user',
+        component: () => import('@/views/user/index'),
+        meta: { title: '所有用户', icon: 'dashboard' }
+      },
+
+      {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('@/views/user/profile'),
+        meta: { title: '我的个人信息', icon: 'dashboard' }
+      }
+  ]
   },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
