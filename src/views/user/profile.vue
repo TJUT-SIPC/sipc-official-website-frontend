@@ -1,6 +1,6 @@
 <template>
   <div id="Profile">
-    <h1>个人资料</h1>
+    <h1>{{ title }}</h1>
     <el-form
       ref="profile"
       :model="profile"
@@ -85,6 +85,7 @@ export default {
   },
   data() {
     return {
+      title: '',
       profile: {
         id: undefined,
         username: '',
@@ -106,8 +107,14 @@ export default {
       editDataRules
     }
   },
+  props: ['scope'],
   created() {
-
+    // 由于是先变url后执行created所以可以根据this.$route.query.id来判断是该组件是修改自己的信息，还是在userTable中复用该组件修改信息
+    if (this.$route.query.id && this.$route.query.username !== this.$store.getters.name) {
+      this.title = `${this.$route.query.username}的信息`
+    } else {
+      this.title = '个人信息'
+    }
   },
   methods: {
     async upLoad(file) {

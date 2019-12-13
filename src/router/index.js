@@ -56,15 +56,28 @@ export const constantRoutes = [
   },
   {
     path: '/user',
+    redirect: 'noRedirect',
     component: Layout,
-    redirect: 'allUser',
     meta: { title: '用户', icon: 'dashboard' },
     children: [
       {
         path: 'allUser',
         name: 'user',
         component: () => import('@/views/user/index'),
-        meta: { title: '所有用户', icon: 'dashboard' }
+        children: [
+          {
+            path: '',
+            name: 'display',
+            component: () => import('@/views/user/components/userTable'),
+            meta: { title: '所有用户', icon: 'dashboard' }
+          },
+          {
+            path: 'edit',
+            name: 'edit',
+            component: () => import('@/views/user/profile'),
+            hidden: true
+          }
+        ]
       },
 
       {
