@@ -8,11 +8,13 @@ export function login(data) {
   })
 }
 
-export function getInfo(token) {
+export function getInfo(id) {
   return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: '/userCenter/getUserById',
+    method: 'post',
+    data: {
+      id
+    }
   })
 }
 

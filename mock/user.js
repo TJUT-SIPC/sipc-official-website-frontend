@@ -38,13 +38,15 @@ const users = {
     introduction: 'I am a super administrator',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Super Admin',
-    status: 2
+    status: 2,
+    id: 1
   },
   'editor-token': {
     roles: ['editor'],
     introduction: 'I am an editor',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Normal Editor'
+    name: 'Normal Editor',
+    id: 2
   }
 }
 
@@ -67,31 +69,37 @@ export default [
 
       return {
         code: 0,
-        data: token,
-        status: 2
+        token: token,
+        status: 2,
+        username
       }
     }
   },
 
   // get user info
   {
-    url: '/user/info\.*',
-    type: 'get',
-    response: config => {
-      const { token } = config.query
-      const info = users[token]
-
-      // mock error
-      if (!info) {
-        return {
-          code: 50008,
-          message: 'Login failed, unable to get user details.'
-        }
-      }
-
+    url: '/userCenter/getUserById',
+    type: 'post',
+    response: data => {
+      const { id } = data
       return {
-        code: 0,
-        data: info
+        "code": 0,
+        "msg": "success",
+        "data": {
+            "id": id,
+            "username": "admin",
+            "password": "admin",
+            "student_id": '20185338',
+            "age": 89,
+            "gender": '女',
+            "phone": 12322312233,
+            "email": '57345@tjut.com',
+            "create_time": "2019-12-14 07:28:20",
+            "last_login": null,
+            "status": 2,
+            "remark": 'excause？测试测试',
+            "head_image": "https://eslint.org/assets/img/logo.svg"
+        }
       }
     }
   },

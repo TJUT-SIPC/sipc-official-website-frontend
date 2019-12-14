@@ -19,7 +19,7 @@
           :on-error="handleAvatarError"
           :on-progress="handleAvatarError"
         >
-          <img v-if="profile.imageUrl" :src="profile.imageUrl" class="avatar" />
+          <img v-if="profile.head_image" :src="profile.head_image" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
@@ -72,10 +72,7 @@
 </template>
 
 <script>
-/*
-  个人信息界面需要一个获取个人信息的api
-*/
-import { uploadHeadImage, editSubmit } from '@/api/user'
+import { uploadHeadImage, editSubmit, getInfo } from '@/api/user'
 import { statusFilter } from './filter/index'
 import editDataRules from './rules/index'
 export default {
@@ -97,7 +94,7 @@ export default {
         phone: '',
         status: undefined,
         remark: '',
-        imageUrl: ''
+        head_image: ''
       },
       profile_gender_options: [
         { value: '男', label: '男' },
@@ -111,8 +108,10 @@ export default {
   created() {
     // 由于是先变url后执行created所以可以根据this.$route.query.id来判断是该组件是修改自己的信息，还是在userTable中复用该组件修改信息
     if (this.$route.query.id && this.$route.query.username !== this.$store.getters.name) {
+      this.displayInit(this.$route.query.id)
       this.title = `${this.$route.query.username}的信息`
     } else {
+      this.displayInit(this.$store.getters.id)
       this.title = '个人信息'
     }
   },
@@ -123,7 +122,7 @@ export default {
       try {
         const req = await uploadHeadImage(file)
         if (Number(req.code) === 0) {
-          this.profile.imageUrl = req.data.image_raw
+          this.profile.head_image = req.data.image_raw
           this.$message({
             type: 'success',
             message: '上传成功'
@@ -140,6 +139,12 @@ export default {
           message: '上传失败'
         })
       }
+    },
+    async displayInit(id) {
+      const req = await getInfo(id)
+      Object.keys(req.data).forEach(item => {
+        this.profile[item] = req.data[item]
+      })
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg'
