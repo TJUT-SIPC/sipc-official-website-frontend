@@ -3,9 +3,11 @@ import { param2Obj } from '../src/utils'
 
 import user from './user'
 import project from './project'
+import wish from './wish'
 const mocks = [
   ...user,
-  ...project
+  ...project,
+  ...wish
 ]
 
 // for front mock

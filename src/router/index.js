@@ -114,6 +114,20 @@ export const constantRoutes = [
       }
     ]
   },
+
+  {
+    path: '/wish',
+    name: 'wish',
+    component: Layout,
+    children: [
+      {
+        path: 'allWish',
+        name: 'allWish',
+        meta: { title: '寄语管理', icon: 'example'},
+        component: () => import('@/views/wish/index')
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

@@ -35,7 +35,6 @@ export default {
         })
         this.total.num = Number(data.data.total)
       })
-      console.log(this.projects_list)
     }
   },
   beforeRouteEnter(to, from, next) {
