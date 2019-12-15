@@ -58,7 +58,7 @@ export const constantRoutes = [
     path: '/user',
     redirect: 'noRedirect',
     component: Layout,
-    meta: { title: '用户', icon: 'dashboard' },
+    meta: { title: '用户', icon: 'user' },
     children: [
       {
         path: 'allUser',
@@ -86,7 +86,33 @@ export const constantRoutes = [
         component: () => import('@/views/user/profile'),
         meta: { title: '我的个人信息', icon: 'dashboard' }
       }
-  ]
+   ]
+  },
+  {
+    path: '/project',
+    component: Layout,
+    meta: { title: '项目管理', icon: 'form' },
+    children: [
+      {
+        path: 'allProject',
+        name: 'allProject',
+        component: () => import('@/views/project/index'),
+        children: [
+          {
+            path: '',
+            name: 'all',
+            component: () => import('@/views/project/components/projectTable'),
+            meta: { title: '所有项目', icon: 'dashboard' },
+          }
+        ]
+      },
+      {
+        path: 'addProject',
+        name: 'addProject',
+        component: () => import('@/views/project/project-add'),
+        meta: { title: '添加项目', icon: 'dashboard' }
+      }
+    ]
   },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

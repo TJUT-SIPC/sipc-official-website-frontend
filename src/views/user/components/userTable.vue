@@ -97,6 +97,7 @@ export default {
       editDataRules,
       status: [0, 1, 2], // 权限
       editData: { // 快速编辑中的表单
+        id: undefined,
         username: '',
         password: '',
         email: '',
@@ -132,6 +133,7 @@ export default {
       this.$router.push({ path: 'allUser/edit?id=' + scope.row.id + '&' + 'username=' + scope.row.username })
     },
     quickEditUser(scope) {
+      this.editData.id = scope.row.id
       this.editData.username = scope.row.username
       this.editData.email = scope.row.email
       this.editData.status = scope.row.status
