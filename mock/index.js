@@ -5,11 +5,15 @@ import user from './user'
 import project from './project'
 import wish from './wish'
 import dynamic from './dynamic'
+import message from './message'
+import award from './award'
 const mocks = [
   ...user,
   ...project,
   ...wish,
-  ...dynamic
+  ...dynamic,
+  ...message,
+  ...award
 ]
 
 // for front mock

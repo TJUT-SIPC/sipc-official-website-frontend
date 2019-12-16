@@ -148,7 +148,7 @@ export default {
       this.$refs['editData'].validate(async(valid) => {
         if (valid) {
           this.editLoading = true
-          const req = await editSubmit(this.editData)
+          const req = await modifyDynamic(this.editData)
           Object.keys(this.editData).forEach(item => {
             if (item !== '$index') {
               this.dynamics_list[this.editData.$index][item] = this.editData[item]

@@ -156,6 +156,40 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/message',
+    name: 'message',
+    component: Layout,
+    meta: { title: '留言板', icon: 'user' },
+    children: [
+      {
+        path: '',
+        component: () => import('@/views/message/index'),
+        meta: { title: '所有留言', icon: 'user' }
+      }
+    ]
+  },
+
+  {
+    path: '/award',
+    name: 'award',
+    component: Layout,
+    meta: { title: '奖项管理', icon: 'user' },
+    children: [
+      {
+        path: 'allAward',
+        name: 'allAward',
+        component: () => import('@/views/award/index'),
+        meta: { title: '所有奖项', icon: 'user' }
+      },
+      {
+        path: 'addAward',
+        name: 'addAward',
+        component: () => import('@/views/award/addAward'),
+        meta: { title: '新建奖项', icon: 'user' }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

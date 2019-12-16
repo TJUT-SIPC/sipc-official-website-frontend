@@ -53,7 +53,7 @@ export default {
     upLoad(file) {
       const formData = new FormData()
       formData.append('file', file.file)
-      this.projectForm.image = file.file
+      this.projectForm.image = formData
       this.imageUrl = URL.createObjectURL(file.file)
     },
     beforeImageUpload(file) {
