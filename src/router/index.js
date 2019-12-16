@@ -56,7 +56,6 @@ export const constantRoutes = [
   },
   {
     path: '/user',
-    redirect: 'noRedirect',
     component: Layout,
     meta: { title: '用户', icon: 'user' },
     children: [
@@ -64,27 +63,25 @@ export const constantRoutes = [
         path: 'allUser',
         name: 'user',
         component: () => import('@/views/user/index'),
-        children: [
-          {
-            path: '',
-            name: 'display',
-            component: () => import('@/views/user/components/userTable'),
-            meta: { title: '所有用户', icon: 'dashboard' }
-          },
-          {
-            path: 'edit',
-            name: 'edit',
-            component: () => import('@/views/user/profile'),
-            hidden: true
-          }
-        ]
+        meta: { title: '所有用户', icon: 'user'}
       },
-
+      {
+        path: 'edit',
+        name: 'editUser',
+        component: () => import('@/views/user/profile'),
+        hidden: true
+      },
       {
         path: 'profile',
         name: 'profile',
         component: () => import('@/views/user/profile'),
         meta: { title: '我的个人信息', icon: 'dashboard' }
+      },
+      {
+        path: 'addUser',
+        name: 'addUser',
+        component: () => import('@/views/user/profile'),
+        meta: { title: '添加用户', icon: 'user' }
       }
    ]
   },

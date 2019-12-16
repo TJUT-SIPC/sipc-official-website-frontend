@@ -1,6 +1,5 @@
 <template>
   <div id="Profile">
-    <h1>{{ title }}</h1>
     <el-form
       ref="profile"
       :model="profile"
@@ -65,7 +64,7 @@
         <el-input type="textarea" v-model="profile.remark"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="modifyUser" type="primary">更改个人信息</el-button>
+        <el-button @click="modifyUser" type="primary">更改信息</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -104,15 +103,13 @@ export default {
       editDataRules
     }
   },
-  props: ['scope'],
   created() {
-    // 由于是先变url后执行created所以可以根据this.$route.query.id来判断是该组件是修改自己的信息，还是在userTable中复用该组件修改信息
-    if (this.$route.query.id && this.$route.query.username !== this.$store.getters.name) {
-      this.displayInit(this.$route.query.id)
-      this.title = `${this.$route.query.username}的信息`
-    } else {
-      this.displayInit(this.$store.getters.id)
-      this.title = '个人信息'
+    if (this.$route.name === 'profile') {
+      this.displayInit(this.$store.state.id)
+    } else if(this.$route.name === 'editUser') {
+      Object.keys(this.$route.params).forEach(item => {
+        this.profile[item] = this.$route.params[item]
+      })
     }
   },
   methods: {

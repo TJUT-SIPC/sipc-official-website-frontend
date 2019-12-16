@@ -111,10 +111,6 @@ export default {
     pageChange(page) {
       this.$router.replace('?page=' + page)
     },
-    editUser(scope) {
-      this.scope = scope
-      this.$router.push({ path: 'allUser/edit?id=' + scope.row.id + '&' + 'username=' + scope.row.username })
-    },
     edit(scope) {
       this.$router.push({name: 'editDynamic', params: {
         id: scope.row.id,
