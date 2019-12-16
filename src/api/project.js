@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import request from "@/utils/request"
 export function getProjects(page, pageSize) {
   return request({
     url: "/projectCenter/getProjects",

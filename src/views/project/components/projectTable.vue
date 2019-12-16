@@ -124,7 +124,7 @@ export default {
       const formData = new FormData()
       formData.append('file', file.file)
       try {
-        const req = await uploadProjectImage(file)
+        const req = await uploadProjectImage(formData)
         if (Number(req.code) === 0) {
           this.editData.image.compress = req.data.image_compress
           this.editData.image.row = req.data.image_row

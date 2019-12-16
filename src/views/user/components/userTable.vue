@@ -84,7 +84,7 @@ import { getUserList, editSubmit, deleteUser } from '@/api/user'
 import editDataRules from '@/views/user/rules/index'
 import { statusFilter } from '@/views/user/filter/index'
 export default {
-  username: 'UserTable',
+  name: 'UserTable',
   filters: {
     statusFilter
   },

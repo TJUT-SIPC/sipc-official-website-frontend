@@ -128,6 +128,34 @@ export const constantRoutes = [
       }
     ]
   },
+
+  {
+    path: '/dynamics',
+    name: 'dynamics',
+    component: Layout,
+    meta: { title: '动态', icon: 'user' },
+    children: [
+      {
+        path: 'allDynamics',
+        name: 'allDynamics',
+        component: () => import('@/views/dynamic/index'),
+        meta: { title: '所有动态', icon: 'user' }      
+      },
+      {
+        path: 'addDynamic',
+        name: 'addDynamic',
+        component: () => import('@/views/dynamic/profile'),
+        meta: { title: '添加动态', icon: 'user' }
+      },
+      {
+        path: 'edit',
+        name: 'editDynamic',
+        component: () => import('@/views/dynamic/profile'),
+        meta: { title: '编辑', icon: 'user' },
+        hidden: true
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

@@ -120,7 +120,7 @@ export default {
       const formData = new FormData()
       formData.append('file', file.file)
       try {
-        const req = await uploadHeadImage(file)
+        const req = await uploadHeadImage(formData)
         if (Number(req.code) === 0) {
           this.profile.head_image = req.data.image_raw
           this.$message({

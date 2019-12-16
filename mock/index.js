@@ -4,10 +4,12 @@ import { param2Obj } from '../src/utils'
 import user from './user'
 import project from './project'
 import wish from './wish'
+import dynamic from './dynamic'
 const mocks = [
   ...user,
   ...project,
-  ...wish
+  ...wish,
+  ...dynamic
 ]
 
 // for front mock
