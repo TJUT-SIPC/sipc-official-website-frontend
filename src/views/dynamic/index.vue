@@ -6,33 +6,33 @@
       <el-table-column label="标题" width="128" prop="header" />
       <el-table-column label="作者" width="100" prop="editor" />
       <el-table-column label="文章" width="420">
-          <template slot-scope="scope">
-              {{ scope.row.text | dynamicFilter }}
-          </template>
+        <template slot-scope="scope">
+          {{ scope.row.text | dynamicFilter }}
+        </template>
       </el-table-column>
       <el-table-column label="时间" width="200" prop="time" />
       <el-table-column label="操作" width="350">
-          <template slot-scope="scope">
-              <el-row :gutter="1">
-                  <el-col :span="6">
-                     <el-button type="primary" @click="edit(scope)">编辑</el-button>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-button type="primary" @click="quickEdit(scope)">快速编辑</el-button>   
-                  </el-col>
-                  <el-col :span="6">
-                    <el-button type="danger" @click="openDeletePrompt(scope)">删除</el-button>
-                  </el-col>
-              </el-row>
-          </template>
+        <template slot-scope="scope">
+          <el-row :gutter="1">
+            <el-col :span="6">
+              <el-button type="primary" @click="edit(scope)">编辑</el-button>
+            </el-col>
+            <el-col :span="12">
+              <el-button type="primary" @click="quickEdit(scope)">快速编辑</el-button>
+            </el-col>
+            <el-col :span="6">
+              <el-button type="danger" @click="openDeletePrompt(scope)">删除</el-button>
+            </el-col>
+          </el-row>
+        </template>
       </el-table-column>
     </el-table>
     <el-dialog title="快速编辑" :visible.sync="editVisible">
-      <el-form ref="editData" :model="editData" v-loading="editLoading" label-width="80px">
+      <el-form ref="editData" v-loading="editLoading" :model="editData" label-width="80px">
         <el-form-item>
-            <el-form-item label="标题">
-                <el-input v-model="editData.header"></el-input>
-            </el-form-item>
+          <el-form-item label="标题">
+            <el-input v-model="editData.header" />
+          </el-form-item>
         </el-form-item>
         <el-form-item>
           <el-row :gutter="4">
@@ -53,14 +53,14 @@
         <el-button type="primary" @click="delDynamic">确 定</el-button>
       </span>
     </el-dialog>
-	<el-pagination
+    <el-pagination
       :page-size="page_size"
       :pager-count="11"
       layout="prev, pager, next"
       :current-page="current_page"
-	    @current-change="pageChange"
-      :total="total">
-    </el-pagination>
+      :total="total"
+      @current-change="pageChange"
+    />
   </div>
 </template>
 
@@ -70,7 +70,7 @@ import { dynamicFilter } from '@/views/dynamic/filter/dynamicFilter'
 export default {
   name: 'DynamicsTable',
   filters: {
-      dynamicFilter
+    dynamicFilter
   },
   data() {
     return {
@@ -95,7 +95,7 @@ export default {
       }
     }
   },
-  created() { 
+  created() {
     this.displayDynamicsList(this.$route.query.page, this.page_size)
   },
   methods: {
@@ -112,7 +112,7 @@ export default {
       this.$router.replace('?page=' + page)
     },
     edit(scope) {
-      this.$router.push({name: 'editDynamic', params: {
+      this.$router.push({ name: 'editDynamic', params: {
         id: scope.row.id,
         editor: scope.row.editor,
         text: scope.row.text,
@@ -137,7 +137,12 @@ export default {
     },
     async delDynamic() {
       const req = await delDynamic(this.deletePrompt_data.id)
-      this.dynamics_list.splice(this.deletePrompt_data.$index, 1)
+      if (req.code === 0) {
+        this.dynamics_list.splice(this.deletePrompt_data.$index, 1)
+        this.$message.success(req.msg)
+      } else {
+        this.$message.error(req.msg)
+      }
       this.deletePrompt = false
     },
     async editSubmit() {
@@ -145,13 +150,18 @@ export default {
         if (valid) {
           this.editLoading = true
           const req = await modifyDynamic(this.editData)
-          Object.keys(this.editData).forEach(item => {
-            if (item !== '$index') {
-              this.dynamics_list[this.editData.$index][item] = this.editData[item]
-            }
-          })
+          if (req.code === 0) {
+            Object.keys(this.editData).forEach(item => {
+              if (item !== '$index') {
+                this.dynamics_list[this.editData.$index][item] = this.editData[item]
+              }
+            })
+            this.$message.success(req.msg)
+            this.editVisible = false
+          } else {
+            this.$message.error(req.msg)
+          }
           this.editLoading = false
-          this.editVisible = false
         } else {
           return false
         }
@@ -174,7 +184,7 @@ export default {
       if (to.query.page) {
         this.current_page = Number(to.query.page)
       } else {
-          this.current_page = 1
+        this.current_page = 1
       }
     }
     next()

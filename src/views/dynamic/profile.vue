@@ -4,7 +4,7 @@
       <el-row :gutter="6">
         <el-col :span="18">
           <el-form-item>
-            <tinymce-editor :init="init" v-model="form.text" />
+            <tinymce-editor v-model="form.text" :init="init" />
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -20,15 +20,15 @@
               :show-file-list="false"
               :before-upload="beforeUpload"
             >
-              <img v-if="form.image" :src="form.image" class="avatar" />
-              <i v-else class="el-icon-plus uploader-icon"></i>
+              <img v-if="form.image" :src="form.image" class="avatar">
+              <i v-else class="el-icon-plus uploader-icon" />
             </el-upload>
           </el-form-item>
           <el-form-item label="标题">
-            <el-input v-model="form.header"></el-input>
+            <el-input v-model="form.header" />
           </el-form-item>
           <el-form-item label="作者">
-            <el-input v-model="form.editor"></el-input>
+            <el-input v-model="form.editor" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -37,23 +37,26 @@
 </template>
 
 <script>
-import { addDynamic, modifyDynamic, uploadDynamicImage, getDynamics } from '@/api/dynamic'
+import { modifyDynamic, uploadDynamicImage } from '@/api/dynamic'
 import message from '@/utils/message'
 import 'tinymce/tinymce'
 import 'tinymce/themes/silver/index'
 import 'tinymce/skins/ui/oxide/content.css'
 import 'tinymce/skins/ui/oxide/skin.css'
-import Editor from '@tinymce/tinymce-vue';
+import Editor from '@tinymce/tinymce-vue'
 import '@/assets/langs/zh_CN'
 // yyyy-mm-dd
 function format(date) {
-  let yyyy = date.getFullYear(),
-      mm = date.getMonth(),
-      dd = date.getDate()
+  const yyyy = date.getFullYear()
+  const mm = date.getMonth()
+  const dd = date.getDate()
   return `${yyyy}-${mm}-${dd}`
 }
 export default {
-  name: 'profile',
+  name: 'Profile',
+  components: {
+    'tinymce-editor': Editor
+  },
   props: ['publicData'],
   data() {
     return {
@@ -71,9 +74,6 @@ export default {
       }
     }
   },
-  components: {
-    'tinymce-editor': Editor
-  },
   created() {
     if (this.$route.params.text) {
       this.use = 1
@@ -81,6 +81,8 @@ export default {
         this.form[item] = this.$route.params[item]
       })
     }
+  },
+  mounted() {
   },
   methods: {
     async upLoad(file) {
@@ -122,24 +124,22 @@ export default {
       return isLt2M && (isJPG || isPNG || isJPEG)
     },
     async submit() {
-      this.form.time = format(new Date)
+      this.form.time = format(new Date())
       console.log(this.use)
       // if(this.use === 0) {
       //   const req = await addDynamic(this.form)
       //   message(req)
       // } else {
-        
+
       // }
       const req = await modifyDynamic(this.form)
-        message(req)
+      message(req)
     },
     reset() {
       this.form.header = ''
       this.form.text = ''
       this.form.image = ''
     }
-  },
-  mounted() {
   }
 }
 </script>

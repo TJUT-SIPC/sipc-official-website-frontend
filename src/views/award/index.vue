@@ -7,21 +7,21 @@
       <el-table-column label="时间" width="150" prop="time" />
       <el-table-column label="操作" width="250">
         <template slot-scope="scope">
-          <el-row :gutter="4"> 
+          <el-row :gutter="4">
             <el-col :span="12">
-                <el-button type="primary" @click="quickEditProject(scope)">快速编辑</el-button>
+              <el-button type="primary" @click="quickEditProject(scope)">快速编辑</el-button>
             </el-col>
             <el-col :span="12">
-                <el-button type="danger" @click="openDeletePrompt(scope)">删除</el-button>
+              <el-button type="danger" @click="openDeletePrompt(scope)">删除</el-button>
             </el-col>
           </el-row>
         </template>
       </el-table-column>
     </el-table>
     <el-dialog title="快速编辑" :visible.sync="editVisible">
-      <el-form ref="editData" :model="editData" v-loading="editLoading" label-width="80px">
+      <el-form ref="editData" v-loading="editLoading" :model="editData" label-width="80px">
         <el-form-item label="项目名字" prop="name">
-            <el-input v-model="editData.name" placeholder="请输入名字"></el-input>
+          <el-input v-model="editData.name" placeholder="请输入名字" />
         </el-form-item>
         <el-form-item prop="time" label="时间">
           <el-date-picker
@@ -30,15 +30,15 @@
             placeholder="选择日期"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
-          ></el-date-picker>
+          />
         </el-form-item>
         <el-form-item>
           <el-row :gutter="4">
             <el-col :span="12">
-              <el-button type="primary" @click="modifyAward" style="width: 100%">提交</el-button>
+              <el-button type="primary" style="width: 100%" @click="modifyAward">提交</el-button>
             </el-col>
             <el-col :span="12">
-              <el-button type="primary" @click="editCancel" style="width: 100%">取消</el-button>
+              <el-button type="primary" style="width: 100%" @click="editCancel">取消</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -56,9 +56,9 @@
       :pager-count="11"
       layout="prev, pager, next"
       :current-page="current_page"
-      @current-change="pageChange"
       :total="total"
-    ></el-pagination>
+      @current-change="pageChange"
+    />
   </div>
 </template>
 
@@ -73,10 +73,10 @@ export default {
       current_page: 1,
       awards_list: [],
       editData: {
-          name: '',
-          time: '',
-          id: undefined,
-          $index: undefined
+        name: '',
+        time: '',
+        id: undefined,
+        $index: undefined
       },
       editVisible: false, // 快速编辑界面是否显示
       editLoading: false, // 快速编辑界面是否处于加载中
@@ -110,7 +110,11 @@ export default {
     },
     async delAward() {
       const req = await delAward(this.deletePrompt_data.id)
-      this.awards_list.splice(this.deletePrompt_data.$index, 1)
+      if (req.code === 0) {
+        this.awards_list.splice(this.deletePrompt_data.$index, 1)
+      } else {
+        this.$message.error(req.msg)
+      }
       this.deletePrompt = false
     },
     quickEditProject(scope) {
@@ -121,7 +125,7 @@ export default {
       this.editVisible = true
     },
     modifyAward() {
-        this.$refs['editData'].validate(async(valid) => {
+      this.$refs['editData'].validate(async(valid) => {
         if (valid) {
           this.editLoading = true
           const req = await modifyAward(this.editData)
@@ -143,7 +147,7 @@ export default {
       })
     },
     editCancel() {
-        this.editVisible = false
+      this.editVisible = false
     }
   },
   beforeRouteEnter(to, from, next) {

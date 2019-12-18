@@ -1,40 +1,40 @@
 <template>
   <div id="AddAward">
-      <el-form class="AddAward" ref="form" :model="form">
-          <el-form-item label="项目名称">
-              <el-input v-model="form.name"></el-input>
-          </el-form-item>
-          <el-form-item prop="time" label="时间">
-          <el-date-picker
-            v-model="form.time"
-            type="date"
-            placeholder="选择日期"
-            format="yyyy-MM-dd"
-            value-format="yyyy-MM-dd"
-          ></el-date-picker>
-        </el-form-item>
-        <el-form-item>
-            <el-button @click="submit" v-loading="submitLoading" >提交</el-button>
-        </el-form-item>
-      </el-form>
+    <el-form ref="form" class="AddAward" :model="form">
+      <el-form-item label="项目名称">
+        <el-input v-model="form.name" />
+      </el-form-item>
+      <el-form-item prop="time" label="时间">
+        <el-date-picker
+          v-model="form.time"
+          type="date"
+          placeholder="选择日期"
+          format="yyyy-MM-dd"
+          value-format="yyyy-MM-dd"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button v-loading="submitLoading" @click="submit">提交</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script>
 import { addAward } from '@/api/award'
 export default {
-    name: 'AddAward',
-    data() {
-        return {
-            form: {
-                name: '',
-                time: ''
-            },
-            submitLoading: false,
-        }
-    },
-    methods: {
-        async submit() {
+  name: 'AddAward',
+  data() {
+    return {
+      form: {
+        name: '',
+        time: ''
+      },
+      submitLoading: false
+    }
+  },
+  methods: {
+    async submit() {
       this.$refs['form'].validate(async(valid) => {
         if (valid) {
           this.submitLoading = true
@@ -45,13 +45,12 @@ export default {
             this.$message.error(req.msg)
           }
           this.submitLoading = false
-
         } else {
           return false
         }
       })
     }
-    }
+  }
 }
 </script>
 

@@ -1,30 +1,35 @@
 <template>
   <div id="Wish">
     <el-table :data.sync="wishes_list" width="100%">
-      <el-table-column type="selection" width="55"/>
-      <el-table-column label="作者" prop="name" width="84"/>
-      <el-table-column label="寄语" prop="word" width="400" />
-      <el-table-column label="状态">
+      <el-table-column type="selection" width="55" />
+      <el-table-column label="作者" prop="name" width="84" />
+      <el-table-column label="寄语" prop="word" width="680" />
+      <el-table-column label="状态" width="160">
         <template slot-scope="scope">
-          <el-select v-model="scope.row.status" @change="changeStatus(scope)" placeholder="请选择">
+          <el-select v-model="scope.row.status" placeholder="请选择" @change="changeStatus(scope)">
             <el-option
-            v-for="item in status"
-            :key="item"
-            :label="item | statusFilter"
-            :value="item">
-            </el-option>
+              v-for="item in status"
+              :key="item"
+              :label="item | statusFilter"
+              :value="item"
+            />
           </el-select>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="160">
+        <template slot-scope="scope">
+          <el-button type="danger" @click="delWish(scope)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
-    :page-size="page_size"
-    :pager-count="11"
-    layout="prev, pager, next"
-    :current-page="current_page"
-    @current-change="pageChange"
-    :total="total">
-    </el-pagination>
+      :page-size="page_size"
+      :pager-count="11"
+      layout="prev, pager, next"
+      :current-page="current_page"
+      :total="total"
+      @current-change="pageChange"
+    />
   </div>
 </template>
 
@@ -54,10 +59,10 @@ export default {
       this.form_list = []
       const data = await getAllWishes(page, pageSize, status)
       data.data.wishes_list.forEach((item, key) => {
-          item.$index = key
-          this.wishes_list.push(item)
-          this.form_list.push(item)
-        })
+        item.$index = key
+        this.wishes_list.push(item)
+        this.form_list.push(item)
+      })
       this.total = Number(data.data.total)
     },
     pageChange(page) {
@@ -66,6 +71,15 @@ export default {
     async changeStatus(scope) {
       const req = await modifyWish(scope.row.id, scope.row.status)
       if (req.code === 0) {
+        this.$message.success(req.msg)
+      } else {
+        this.$message.error(req.msg)
+      }
+    },
+    async delWish(scope) {
+      const req = await delWish(scope.row.id)
+      if (req.code === 0) {
+        this.wishes_list.splice(scope.$index, 1)
         this.$message.success(req.msg)
       } else {
         this.$message.error(req.msg)

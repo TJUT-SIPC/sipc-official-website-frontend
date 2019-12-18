@@ -1,12 +1,4 @@
 import Mock from "mockjs";
-const tokens = {
-  admin: {
-    token: "admin-token"
-  },
-  editor: {
-    token: "editor-token"
-  }
-};
 
 const data = Mock.mock({
   code: 0,
@@ -32,26 +24,6 @@ const data = Mock.mock({
     ]
   }
 });
-
-const users = {
-  "admin-token": {
-    roles: ["admin"],
-    introduction: "I am a super administrator",
-    avatar:
-      "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-    name: "Super Admin",
-    status: 2,
-    id: 1
-  },
-  "editor-token": {
-    roles: ["editor"],
-    introduction: "I am an editor",
-    avatar:
-      "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
-    name: "Normal Editor",
-    id: 2
-  }
-};
 
 export default [
   // user login

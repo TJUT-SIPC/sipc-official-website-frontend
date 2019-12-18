@@ -7,15 +7,15 @@
           <div @mouseenter="openInlineOperate(scope)" @mouseleave="closeInlineOperate(scope)">
             <el-row>
               <el-col :span="4">
-                <img class="head_image" :src="scope.row.head_image" alt />
+                <img class="head_image" :src="scope.row.head_image" alt>
               </el-col>
               <el-col :span="20">
-								{{ scope.row.username }}
+                {{ scope.row.username }}
                 <ul class="operate-inline">
                   <li @click="editUser(scope)">编辑</li>
                   <li @click="quickEditUser(scope)">快速编辑</li>
                   <li @click="openDeletePrompt(scope)">删除</li>
-                  <div class="clear"></div>
+                  <div class="clear" />
                 </ul>
               </el-col>
             </el-row>
@@ -29,12 +29,12 @@
       <el-table-column prop="phone" label="手机号" width="200" />
     </el-table>
     <el-dialog title="快速编辑" :visible.sync="editVisible">
-      <el-form ref="editData" :model="editData" :rules="editDataRules" v-loading="editLoading" label-width="80px">
+      <el-form ref="editData" v-loading="editLoading" :model="editData" :rules="editDataRules" label-width="80px">
         <el-form-item prop="username" label="用户名">
-          <el-input v-model="editData.username" placeholder="请输入用户名"></el-input>
+          <el-input v-model="editData.username" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item prop="email" label="邮箱">
-          <el-input v-model="editData.email" placeholder="请输入邮箱"></el-input>
+          <el-input v-model="editData.email" placeholder="请输入邮箱" />
         </el-form-item>
         <el-form-item prop="status" label="权限">
           <el-select v-model="editData.status" placeholder="请选择">
@@ -42,20 +42,20 @@
               v-for="item in status"
               :key="item"
               :label="item | statusFilter"
-              :value="item">
-            </el-option>
+              :value="item"
+            />
           </el-select>
         </el-form-item>
         <el-form-item prop="phone" label="手机号">
-          <el-input v-model="editData.phone" placeholder="请输入手机号"></el-input>
+          <el-input v-model="editData.phone" placeholder="请输入手机号" />
         </el-form-item>
         <el-form-item>
           <el-row :gutter="4">
             <el-col :span="12">
-              <el-button type="primary" @click="editSubmit" style="width: 100%">提交</el-button>
+              <el-button type="primary" style="width: 100%" @click="editSubmit">提交</el-button>
             </el-col>
             <el-col :span="12">
-              <el-button type="primary" @click="editCancel" style="width: 100%">取消</el-button>
+              <el-button type="primary" style="width: 100%" @click="editCancel">取消</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -68,14 +68,14 @@
         <el-button type="primary" @click="deleteUser">确 定</el-button>
       </span>
     </el-dialog>
-		<el-pagination
+    <el-pagination
       :page-size="page_size.num"
       :pager-count="11"
       layout="prev, pager, next"
       :current-page="current_page.num"
-			@current-change="pageChange"
-      :total="total.num">
-    </el-pagination>
+      :total="total.num"
+      @current-change="pageChange"
+    />
   </div>
 </template>
 
@@ -88,6 +88,7 @@ export default {
   filters: {
     statusFilter
   },
+  props: ['currentPage', 'usersList', 'total', 'pageSize'],
   data() {
     return {
       scope: null,
@@ -112,7 +113,6 @@ export default {
       }
     }
   },
-  props: ['current_page', 'users_list', 'total', 'page_size'],
   created() {
     for (let i = 0; i < this.page_size; i++) {
       this.inline_operate[i] = false

@@ -25,9 +25,9 @@
       :pager-count="11"
       layout="prev, pager, next"
       :current-page="current_page"
-      @current-change="pageChange"
       :total="total"
-    ></el-pagination>
+      @current-change="pageChange"
+    />
   </div>
 </template>
 
@@ -73,7 +73,12 @@ export default {
     },
     async delMessage() {
       const req = await delMessage(this.deletePrompt_data.id)
-      this.messages_list.splice(this.deletePrompt_data.$index, 1)
+      if (req.code === 0) {
+        this.messages_list.splice(this.deletePrompt_data.$index, 1)
+        this.$message.success(req.msg)
+      } else {
+        this.$message.error(req.msg)
+      }
       this.deletePrompt = false
     }
   },

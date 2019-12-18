@@ -18,18 +18,18 @@
           :on-error="handleAvatarError"
           :on-progress="handleAvatarError"
         >
-          <img v-if="profile.head_image" :src="profile.head_image" class="avatar" />
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          <img v-if="profile.head_image" :src="profile.head_image" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
       </el-form-item>
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="profile.username" placeholder="请输入用户名"></el-input>
+        <el-input v-model="profile.username" placeholder="请输入用户名" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="profile.password" placeholder="请输入密码"></el-input>
+        <el-input v-model="profile.password" placeholder="请输入密码" />
       </el-form-item>
       <el-form-item label="年龄">
-        <el-input v-model="profile.age" placeholder="请输入年龄"></el-input>
+        <el-input v-model="profile.age" placeholder="请输入年龄" />
       </el-form-item>
       <el-form-item label="性别">
         <el-select v-model="profile.gender" placeholder="请选择">
@@ -38,17 +38,17 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
-          ></el-option>
+          />
         </el-select>
       </el-form-item>
       <el-form-item label="学号" prop="student_id">
-        <el-input v-model="profile.student_id" placeholder="请输入学号"></el-input>
+        <el-input v-model="profile.student_id" placeholder="请输入学号" />
       </el-form-item>
       <el-form-item label="联系方式" prop="phone">
-        <el-input v-model="profile.phone" placeholder="请输入手机号"></el-input>
+        <el-input v-model="profile.phone" placeholder="请输入手机号" />
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
-        <el-input v-model="profile.email" placeholder="请输入邮箱"></el-input>
+        <el-input v-model="profile.email" placeholder="请输入邮箱" />
       </el-form-item>
       <el-form-item label="用户权限" prop="status">
         <el-select v-model="profile.status" placeholder="请选择">
@@ -57,14 +57,14 @@
             :key="item"
             :label="item | statusFilter"
             :value="item"
-          ></el-option>
+          />
         </el-select>
       </el-form-item>
       <el-form-item label="用户备注">
-        <el-input type="textarea" v-model="profile.remark"></el-input>
+        <el-input v-model="profile.remark" type="textarea" />
       </el-form-item>
       <el-form-item>
-        <el-button @click="modifyUser" type="primary">更改信息</el-button>
+        <el-button type="primary" @click="modifyUser">更改信息</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -106,7 +106,7 @@ export default {
   created() {
     if (this.$route.name === 'profile') {
       this.displayInit(this.$store.state.id)
-    } else if(this.$route.name === 'editUser') {
+    } else if (this.$route.name === 'editUser') {
       Object.keys(this.$route.params).forEach(item => {
         this.profile[item] = this.$route.params[item]
       })

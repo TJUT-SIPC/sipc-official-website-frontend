@@ -1,33 +1,34 @@
 <template>
   <div id="ProjectAdd">
-      <el-form ref="projectForm" :model="projectForm" class="ProjectAdd" :rules="projectRule">
-        <el-form-item label="项目描述" prop="description">
-          <el-input type="textarea" v-model="projectForm.description"></el-input>
-        </el-form-item>
-        <el-form-item label="时间" prop="time">
-          <el-date-picker
-            v-model="projectForm.time"
-            type="date"
-            placeholder="选择日期"
-            format="yyyy-MM-dd"
-            value-format="yyyy-MM-dd">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item prop="image" label="项目图片">
-            <el-upload
-              class="avatar-uploader"
-              action="123"
-              :http-request="upLoad"
-              :show-file-list="false"
-              :before-upload="beforeImageUpload">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submit" :loading="submitLoading">提交</el-button>
-        </el-form-item>
-      </el-form>
+    <el-form ref="projectForm" :model="projectForm" class="ProjectAdd" :rules="projectRule">
+      <el-form-item label="项目描述" prop="description">
+        <el-input v-model="projectForm.description" type="textarea" />
+      </el-form-item>
+      <el-form-item label="时间" prop="time">
+        <el-date-picker
+          v-model="projectForm.time"
+          type="date"
+          placeholder="选择日期"
+          format="yyyy-MM-dd"
+          value-format="yyyy-MM-dd"
+        />
+      </el-form-item>
+      <el-form-item prop="image" label="项目图片">
+        <el-upload
+          class="avatar-uploader"
+          action="123"
+          :http-request="upLoad"
+          :show-file-list="false"
+          :before-upload="beforeImageUpload"
+        >
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon" />
+        </el-upload>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" :loading="submitLoading" @click="submit">提交</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -81,7 +82,6 @@ export default {
             this.$message.error(req.msg)
           }
           this.submitLoading = false
-
         } else {
           return false
         }

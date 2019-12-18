@@ -63,7 +63,7 @@ export const constantRoutes = [
         path: 'allUser',
         name: 'user',
         component: () => import('@/views/user/index'),
-        meta: { title: '所有用户', icon: 'user'}
+        meta: { title: '所有用户', icon: 'user' }
       },
       {
         path: 'edit',
@@ -83,7 +83,7 @@ export const constantRoutes = [
         component: () => import('@/views/user/profile'),
         meta: { title: '添加用户', icon: 'plus' }
       }
-   ]
+    ]
   },
   {
     path: '/project',
@@ -99,7 +99,7 @@ export const constantRoutes = [
             path: '',
             name: 'all',
             component: () => import('@/views/project/components/projectTable'),
-            meta: { title: '所有项目', icon: 'form' },
+            meta: { title: '所有项目', icon: 'form' }
           }
         ]
       },
@@ -120,7 +120,7 @@ export const constantRoutes = [
       {
         path: 'allWish',
         name: 'allWish',
-        meta: { title: '寄语管理', icon: 'example'},
+        meta: { title: '寄语管理', icon: 'example' },
         component: () => import('@/views/wish/index')
       }
     ]
@@ -136,7 +136,7 @@ export const constantRoutes = [
         path: 'allDynamics',
         name: 'allDynamics',
         component: () => import('@/views/dynamic/index'),
-        meta: { title: '所有动态', icon: 'link' }      
+        meta: { title: '所有动态', icon: 'link' }
       },
       {
         path: 'addDynamic',

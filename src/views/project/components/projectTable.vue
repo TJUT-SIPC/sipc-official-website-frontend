@@ -13,7 +13,7 @@
             <ul class="operate-inline">
               <li @click="quickEditProject(scope)">快速编辑</li>
               <li @click="openDeletePrompt(scope)">删除</li>
-              <div class="clear"></div>
+              <div class="clear" />
             </ul>
           </div>
         </template>
@@ -21,9 +21,9 @@
       <el-table-column label="时间" prop="time" />
     </el-table>
     <el-dialog title="快速编辑" :visible.sync="editVisible">
-      <el-form ref="editData" :model="editData" v-loading="editLoading" label-width="80px">
+      <el-form ref="editData" v-loading="editLoading" :model="editData" label-width="80px">
         <el-form-item prop="description" label="项目描述">
-          <el-input type="textarea" v-model="editData.description" placeholder="请输入用户名"></el-input>
+          <el-input v-model="editData.description" type="textarea" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item prop="time" label="时间">
           <el-date-picker
@@ -32,26 +32,27 @@
             placeholder="选择日期"
             format="yyyy-MM-dd"
             value-format="yyyy-MM-dd"
-          ></el-date-picker>
+          />
         </el-form-item>
         <el-form-item label="项目图片">
-            <el-upload
-              class="avatar-uploader"
-              action="123"
-              :http-request="upLoad"
-              :show-file-list="false"
-              :before-upload="beforeImageUpload">
-              <img v-if="editData.image.compress" :src="editData.image.compress" class="avatar" />
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+          <el-upload
+            class="avatar-uploader"
+            action="123"
+            :http-request="upLoad"
+            :show-file-list="false"
+            :before-upload="beforeImageUpload"
+          >
+            <img v-if="editData.image.compress" :src="editData.image.compress" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
+          </el-upload>
         </el-form-item>
         <el-form-item>
           <el-row :gutter="4">
             <el-col :span="12">
-              <el-button type="primary" @click="modifyProject" style="width: 100%">提交</el-button>
+              <el-button type="primary" style="width: 100%" @click="modifyProject">提交</el-button>
             </el-col>
             <el-col :span="12">
-              <el-button type="primary" @click="editCancel" style="width: 100%">取消</el-button>
+              <el-button type="primary" style="width: 100%" @click="editCancel">取消</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -69,13 +70,13 @@
       :pager-count="11"
       layout="prev, pager, next"
       :current-page="current_page.num"
-      @current-change="pageChange"
       :total="total.num"
-    ></el-pagination>
+      @current-change="pageChange"
+    />
   </div>
 </template>
 <script>
-import { getProjects, modifyProject, delProject, uploadProjectImage } from '@/api/project'
+import { modifyProject, delProject, uploadProjectImage } from '@/api/project'
 export default {
   name: 'UserTable',
   filters: {
@@ -83,6 +84,7 @@ export default {
       return date.toString()
     }
   },
+  props: ['current_page', 'projects_list', 'total', 'page_size'],
   data() {
     return {
       scope: null,
@@ -106,7 +108,6 @@ export default {
       }
     }
   },
-  props: ['current_page', 'projects_list', 'total', 'page_size'],
   created() {
     for (let i = 0; i < this.page_size; i++) {
       this.inline_operate[i] = false
@@ -173,7 +174,7 @@ export default {
       this.editData.id = scope.row.id
       this.editData.description = scope.row.description
       this.editData.time = scope.row.time
-      this.editData.image = {...scope.row.image}
+      this.editData.image = { ...scope.row.image }
       this.editVisible = true
     },
     openDeletePrompt(scope) {
