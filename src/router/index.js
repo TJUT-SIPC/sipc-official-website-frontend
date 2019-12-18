@@ -75,13 +75,13 @@ export const constantRoutes = [
         path: 'profile',
         name: 'profile',
         component: () => import('@/views/user/profile'),
-        meta: { title: '我的个人信息', icon: 'dashboard' }
+        meta: { title: '我的个人信息', icon: 'profile' }
       },
       {
         path: 'addUser',
         name: 'addUser',
         component: () => import('@/views/user/profile'),
-        meta: { title: '添加用户', icon: 'user' }
+        meta: { title: '添加用户', icon: 'plus' }
       }
    ]
   },
@@ -99,7 +99,7 @@ export const constantRoutes = [
             path: '',
             name: 'all',
             component: () => import('@/views/project/components/projectTable'),
-            meta: { title: '所有项目', icon: 'dashboard' },
+            meta: { title: '所有项目', icon: 'form' },
           }
         ]
       },
@@ -107,7 +107,7 @@ export const constantRoutes = [
         path: 'addProject',
         name: 'addProject',
         component: () => import('@/views/project/project-add'),
-        meta: { title: '添加项目', icon: 'dashboard' }
+        meta: { title: '添加项目', icon: 'plus' }
       }
     ]
   },
@@ -130,25 +130,25 @@ export const constantRoutes = [
     path: '/dynamics',
     name: 'dynamics',
     component: Layout,
-    meta: { title: '动态', icon: 'user' },
+    meta: { title: '动态', icon: 'link' },
     children: [
       {
         path: 'allDynamics',
         name: 'allDynamics',
         component: () => import('@/views/dynamic/index'),
-        meta: { title: '所有动态', icon: 'user' }      
+        meta: { title: '所有动态', icon: 'link' }      
       },
       {
         path: 'addDynamic',
         name: 'addDynamic',
         component: () => import('@/views/dynamic/profile'),
-        meta: { title: '添加动态', icon: 'user' }
+        meta: { title: '添加动态', icon: 'plus' }
       },
       {
         path: 'edit',
         name: 'editDynamic',
         component: () => import('@/views/dynamic/profile'),
-        meta: { title: '编辑', icon: 'user' },
+        meta: { title: '编辑', icon: 'link' },
         hidden: true
       }
     ]
@@ -162,7 +162,7 @@ export const constantRoutes = [
       {
         path: '',
         component: () => import('@/views/message/index'),
-        meta: { title: '所有留言', icon: 'user' }
+        meta: { title: '所有留言', icon: 'nested' }
       }
     ]
   },
@@ -171,19 +171,19 @@ export const constantRoutes = [
     path: '/award',
     name: 'award',
     component: Layout,
-    meta: { title: '奖项管理', icon: 'user' },
+    meta: { title: '奖项管理', icon: 'tree' },
     children: [
       {
         path: 'allAward',
         name: 'allAward',
         component: () => import('@/views/award/index'),
-        meta: { title: '所有奖项', icon: 'user' }
+        meta: { title: '所有奖项', icon: 'example' }
       },
       {
         path: 'addAward',
         name: 'addAward',
         component: () => import('@/views/award/addAward'),
-        meta: { title: '新建奖项', icon: 'user' }
+        meta: { title: '新建奖项', icon: 'plus' }
       }
     ]
   },

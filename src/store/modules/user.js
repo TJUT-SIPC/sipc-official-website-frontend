@@ -1,7 +1,7 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
-
+import { Message } from 'element-ui'
 const state = {
   token: getToken(),
   username: '',
@@ -33,12 +33,20 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        const { username, token, id } = response.data
-        commit('SET_TOKEN', token)
-        commit('SET_NAME', username)
-        commit('SET_ID', id)
-        setToken(token)
-        resolve()
+        if (response.code === 1000) {
+          const { username, token, id } = response.data
+          commit('SET_TOKEN', token)
+          commit('SET_NAME', username)
+          commit('SET_ID', id)
+          setToken(token)
+          resolve()
+        } else {
+          Message({
+            type: 'error',
+            message: response.msg
+          })
+          throw new Error('登陆失败')
+        }
       }).catch(error => {
         reject(error)
       })

@@ -9,7 +9,7 @@
       <el-table-column label="建议" width="600" prop="advice" />
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
-          <el-button type="primary" @click="openDeletePrompt(scope)">删除</el-button>
+          <el-button type="danger" @click="openDeletePrompt(scope)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -12,7 +12,7 @@
                 <el-button type="primary" @click="quickEditProject(scope)">快速编辑</el-button>
             </el-col>
             <el-col :span="12">
-                <el-button type="primary" @click="openDeletePrompt(scope)">删除</el-button>
+                <el-button type="danger" @click="openDeletePrompt(scope)">删除</el-button>
             </el-col>
           </el-row>
         </template>
