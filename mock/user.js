@@ -8,16 +8,17 @@ const data = Mock.mock({
     "users_list|27": [
       {
         "id|+1": 10000, // 用户id
-        "username|+1": 0, // 用户名
+        "username": '@string(5, 11)', // 用户名
         password: "123456", // 用户密码
         age: 18, // 年龄
-        gender: "女", // 性别
+        gender: "男", // 性别
         phone: "13800138000", // 手机号
         email: "@email", // 邮箱
-        create_time: "2019-07-26", // 用户创建时间
-        last_login: "2019-12-05", // 用户最后登录时间
-        status: 2, // 权限，0为普通用户，1管理员，2超级管理员
-        remark: "用户备注",
+        "student_id|+1": 20185330,
+        create_time: "@date", // 用户创建时间
+        last_login: "@date", // 用户最后登录时间
+        status: "@pick([0, 1, 2])", // 权限，0为普通用户，1管理员，2超级管理员
+        remark: "@sentence(3, 5)",
         head_image:
           "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"
       }

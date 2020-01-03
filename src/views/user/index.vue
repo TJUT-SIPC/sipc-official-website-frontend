@@ -61,13 +61,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-dialog title="提示" :visible.sync="deletePrompt">
-      <span>确认删除？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="deletePrompt = false">取 消</el-button>
-        <el-button type="primary" @click="deleteUser">确 定</el-button>
-      </span>
-    </el-dialog>
     <el-pagination
       :page-size="page_size.num"
       :pager-count="11"
@@ -109,11 +102,6 @@ export default {
         phone: '',
         status: 0,
         $index: 0
-      },
-      deletePrompt: false, // 内联删除成员提醒界面
-      deletePrompt_data: {
-        $index: 0,
-        id: 0
       }
     }
   },
@@ -148,15 +136,20 @@ export default {
       this.editData.password = scope.row.password
       this.editVisible = true
     },
-    openDeletePrompt(scope) {
-      this.deletePrompt = true
-      this.deletePrompt_data.$index = scope.$index
-      this.deletePrompt_data.id = scope.row.id
+    async openDeletePrompt(scope) {
+      try {
+        await this.$confirm('您确定删除该成员吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        this.deleteUser(scope.row.id, scope.$index)
+      } catch {}
     },
-    async deleteUser() {
-      const req = await deleteUser(this.deletePrompt_data.id)
+    async deleteUser(id, index) {
+      const req = await deleteUser(id)
       if (req.code === 0) {
-        this.users_list.splice(this.deletePrompt_data.$index, 1)
+        this.users_list.splice(index, 1)
         this.$message.success(req.msg)
       } else {
         this.$message.error(req.msg)
