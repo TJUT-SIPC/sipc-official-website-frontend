@@ -111,8 +111,8 @@ export default {
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 178px;
-  height: 178px;
+  width: 260px;
+  height: 180px;
   line-height: 178px;
   text-align: center;
 }

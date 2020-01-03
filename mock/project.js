@@ -7,9 +7,8 @@ const projects = Mock.mock({
     "projects_list|27": [
       {
         'id|+1': 1, //id
-        description:
-          "活动活动活动活动活动活动活动活动活动活动活动活动活动活动活动活动活动活动活动活动", //项目描述
-        time: "2019-01-01", //活动时间
+        description: "@paragraph(1, 3)", //项目描述
+        time: "@date", //活动时间
         image: {
           compress: "https://eslint.org/assets/img/logo.svg", //缩略图url
           raw: "" //原图url

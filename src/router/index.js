@@ -94,14 +94,7 @@ export const constantRoutes = [
         path: 'allProject',
         name: 'allProject',
         component: () => import('@/views/project/index'),
-        children: [
-          {
-            path: '',
-            name: 'all',
-            component: () => import('@/views/project/components/projectTable'),
-            meta: { title: '所有项目', icon: 'form' }
-          }
-        ]
+        meta: { title: '所有项目', icon: 'form' }
       },
       {
         path: 'addProject',

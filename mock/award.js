@@ -7,8 +7,8 @@ const award = Mock.mock({
     "awards_list|27": [
       {
         "id|+1": 1,
-        name: "圣诞节阿里斯顿客机失联飞机到了比赛",
-        time: "1789-09-02"
+        name: "@string(10,15)",
+        time: "@date"
       }
     ]
   }
