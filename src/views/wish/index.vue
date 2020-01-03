@@ -77,13 +77,20 @@ export default {
       }
     },
     async delWish(scope) {
-      const req = await delWish(scope.row.id)
-      if (req.code === 0) {
-        this.wishes_list.splice(scope.$index, 1)
-        this.$message.success(req.msg)
-      } else {
-        this.$message.error(req.msg)
-      }
+      try {
+          await this.$confirm('您确定要删除该寄语？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          })
+          const req = await delWish(scope.row.id)
+          if (req.code === 0) {
+            this.wishes_list.splice(scope.$index, 1)
+            this.$message.success(req.msg)
+          } else {
+            this.$message.error(req.msg)
+          }
+      } catch {}
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -96,7 +103,7 @@ export default {
     // 只有点击页面底部el-pagination时才会触发
     if (to.query.page) {
       this.wishes_list = []
-      this.displayProjectList(to.query.page, this.page_size, 0)
+      this.displayWishList(to.query.page, this.page_size, 0)
       if (to.query.page) {
         this.current_page = Number(to.query.page)
       } else {
