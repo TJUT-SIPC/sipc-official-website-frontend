@@ -26,22 +26,33 @@ const data = Mock.mock({
   }
 });
 
+let validate = {
+  admin: true
+}
+
 export default [
   // user login
   {
     url: "/login",
     type: "post",
     response: config => {
-      return {
-        code: 1000,
-        msg: "success",
-        data: {
-          id: 30, //登陆成功的用户id
-          username: "admin", //用户名
-          token:
-            "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhZG1pbiIsImlhdCI6MTU3NjMwMjAwOCwic3ViIjoiIiwiaXNzIjoic2lwYzExNS5jb20iLCJleHAiOjE1NzY5MDY4MDh9.UhYMDQWRXQVp7nbjqg-CqYx2uwn2Za4h7GJGNJRiJSA" //token请前端以"sipc-token"为变量名保存到Header中
+      if (config.body.username === 'admin') {
+        return {
+          code: 1000,
+          msg: "success",
+          data: {
+            id: 30, //登陆成功的用户id
+            username: "admin", //用户名
+            token:
+              "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhZG1pbiIsImlhdCI6MTU3NjMwMjAwOCwic3ViIjoiIiwiaXNzIjoic2lwYzExNS5jb20iLCJleHAiOjE1NzY5MDY4MDh9.UhYMDQWRXQVp7nbjqg-CqYx2uwn2Za4h7GJGNJRiJSA" //token请前端以"sipc-token"为变量名保存到Header中
+          }
+        };
+      } else {
+        return {
+          code: 1001,
+          msg: '账号不存在'
         }
-      };
+      }
     }
   },
 
