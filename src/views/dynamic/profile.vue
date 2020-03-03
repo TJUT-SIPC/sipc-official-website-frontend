@@ -88,6 +88,7 @@ export default {
     async upLoad(file) {
       const formData = new FormData()
       formData.append('file', file.file)
+      console.log(formData.get('file'))
       try {
         const req = await uploadDynamicImage(formData)
         if (Number(req.code) === 0) {

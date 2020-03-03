@@ -41,8 +41,9 @@ export function uploadDynamicImage(file) {
   return request({
     url: '/uploadDynamicImage',
     method: 'post',
-    data: {
-      file
+    data: file,
+    headers: {
+      'Content-Type': 'multipart/form-data'
     }
   })
 }

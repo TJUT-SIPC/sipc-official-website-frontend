@@ -44,8 +44,9 @@ export function uploadProjectImage(file) {
   return request({
     url: '/uploadProjectImage',
     method: 'post',
-    data: {
-      file
+    data: file,
+    headers: {
+      'Content-Type': 'multipart/form-data'
     }
   })
 }

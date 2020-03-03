@@ -59,8 +59,9 @@ export function uploadHeadImage(file) {
   return request({
     url: '/uploadHeadImage',
     method: 'post',
-    data: {
-      file
+    data: file,
+    headers: {
+      'Content-Type': 'multipart/form-data'
     }
   })
 }
