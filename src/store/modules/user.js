@@ -61,7 +61,6 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
         const { status, head_image, username } = response.data
-        console.log(username)
         commit('SET_NAME', username)
         commit('SET_AVATAR', head_image)
         commit('SET_STATUS', status)

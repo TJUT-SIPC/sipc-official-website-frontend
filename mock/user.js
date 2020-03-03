@@ -36,7 +36,6 @@ export default [
     url: "/login",
     type: "post",
     response: config => {
-      console.log(config)
       if (config.query.username === 'admin') {
         return {
           code: 1000,

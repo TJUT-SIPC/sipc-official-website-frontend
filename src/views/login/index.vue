@@ -111,7 +111,7 @@ export default {
           try {
             this.loading = true
             await this.$store.dispatch('user/login', this.loginForm)
-            await this.$store.dispatch('user/getInfo')
+            // await this.$store.dispatch('user/getInfo')
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           } catch {
