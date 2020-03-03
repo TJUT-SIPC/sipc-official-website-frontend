@@ -6,7 +6,7 @@ export default {
   ],
   password: [
     { required: true, message: '不能位空', trigger: 'blur' },
-    { min: 6, max: 25, message: '长度为6-25', trigger: 'blur' },
+    { min: 5, max: 25, message: '长度为5-25', trigger: 'blur' },
     { pattern: /^(\w+)$/, message: '只能使用字母，数字，下划线', trigger: 'blur' }
   ],
   email: [

@@ -52,12 +52,12 @@ export default {
     }
   },
   created() {
-    this.displayWishList(this.$route.query.page, this.page_size, 3)
+    this.displayWishList(this.$route.query.page, this.page_size)
   },
   methods: {
-    async displayWishList(page, pageSize, status) {
+    async displayWishList(page, pageSize) {
       this.form_list = []
-      const data = await getAllWishes(page, pageSize, status)
+      const data = await getAllWishes(page, pageSize)
       data.data.wishes_list.forEach((item, key) => {
         item.$index = key
         this.wishes_list.push(item)
