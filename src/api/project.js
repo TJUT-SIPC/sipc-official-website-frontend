@@ -14,9 +14,7 @@ export function modifyProject(data) {
   return request({
     url: '/projectCenter/modifyProject',
     method: 'post',
-    params: {
-      data
-    }
+    data
   })
 }
 
@@ -34,8 +32,9 @@ export function addProject(data) {
   return request({
     url: '/projectCenter/addProject',
     method: 'post',
-    data: {
-      data
+    data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
     }
   })
 }

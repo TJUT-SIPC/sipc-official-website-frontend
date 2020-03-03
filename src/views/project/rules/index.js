@@ -7,7 +7,10 @@ export default {
   time: [
     { required: true, message: '不能为空', trigger: 'blur' }
   ],
-  image: [
+  rawImage: [
     { required: true, message: '不能为空', trigger: 'blur' }
-  ]
+  ],
+  compressImage: [
+    { required: true, message: '不能为空', trigger: 'blur' }
+  ],
 }

@@ -11,7 +11,7 @@ const projects = Mock.mock({
         time: "@date", //活动时间
         image: {
           compress: "https://eslint.org/assets/img/logo.svg", //缩略图url
-          raw: "" //原图url
+          raw: "https://eslint.org/assets/img/logo.svg" //原图url
         }
       }
     ]

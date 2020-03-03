@@ -45,6 +45,7 @@ export default {
         time: '',
         image: null
       },
+      form_data: new FormData(),
       imageUrl: '',
       submitLoading: false,
       projectRule
@@ -52,9 +53,7 @@ export default {
   },
   methods: {
     upLoad(file) {
-      const formData = new FormData()
-      formData.append('file', file.file)
-      this.projectForm.image = formData
+      this.projectForm.image = file.file;
       this.imageUrl = URL.createObjectURL(file.file)
     },
     beforeImageUpload(file) {
@@ -75,7 +74,10 @@ export default {
       this.$refs['projectForm'].validate(async(valid) => {
         if (valid) {
           this.submitLoading = true
-          const req = await addProject(this.projectForm)
+          Object.keys(this.projectForm).forEach(item => {
+            this.form_data.append(item, this.projectForm[item]);
+          })
+          const req = await addProject(this.form_data)
           if (req.code === 0) {
             this.$message.success(req.msg)
           } else {

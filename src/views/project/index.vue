@@ -42,7 +42,7 @@
             :show-file-list="false"
             :before-upload="beforeImageUpload"
           >
-            <img v-if="editData.image.compress" :src="editData.image.compress" class="avatar">
+            <img v-if="editData.compressImage" :src="editData.compressImage" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
@@ -88,10 +88,8 @@ export default {
         id: undefined,
         description: '',
         time: '',
-        image: {
-          compress: '',
-          raw: ''
-        },
+        compressImage: '',
+        rawImage: '',
         $index: 0
       },
       projectRule
@@ -119,8 +117,8 @@ export default {
       try {
         const req = await uploadProjectImage(formData)
         if (Number(req.code) === 0) {
-          this.editData.image.compress = req.data.image_compress
-          this.editData.image.row = req.data.image_row
+          this.editData.compressImage = req.data.image_compress
+          this.editData.rowImage = req.data.image_raw
           this.$message({
             type: 'success',
             message: '上传成功'
@@ -166,7 +164,8 @@ export default {
       this.editData.id = scope.row.id
       this.editData.description = scope.row.description
       this.editData.time = scope.row.time
-      this.editData.image = { ...scope.row.image }
+      this.editData.compressImage = scope.row.image.compress;
+      this.editData.rawImage = scope.row.image.raw;
       this.editVisible = true
     },
     openDeletePrompt(scope) {
