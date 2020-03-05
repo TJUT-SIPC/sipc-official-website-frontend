@@ -3,14 +3,40 @@ import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-import { getToken } from '@/utils/auth' // get token from cookie
+import { getToken, getId } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
+function setDisplay(children, roles) {
+  if (!Array.isArray(children)) {
+    return;
+  }
+  children.forEach(item => {
+    if (!item.meta) {}
+    else if (Array.isArray(item.meta.roles)) {
+      let hidden = true;
+      item.meta.roles.forEach(role => {
+        if (roles.indexOf(role) === 0) {
+          hidden = false;
+        }
+      })
+      if (hidden) {
+        item.hidden = true;
+      } else {
+        item.hidden = false;
+      }
+    }
+    setDisplay(item.children, roles)
+  })
+}
+
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
+  
+  
+
   // start progress bar
   NProgress.start()
 
@@ -19,21 +45,21 @@ router.beforeEach(async(to, from, next) => {
 
   // determine whether the user has logged in
   const hasToken = getToken()
-
   if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
       next({ path: '/' })
       NProgress.done()
     } else {
-      const hasGetUserInfo = store.getters.username
-      if (hasGetUserInfo) {
+      const status = store.getters.status;
+      if (status) {
+        setDisplay(router.options.routes, [status]);
         next()
       } else {
         try {
           // get user info
           await store.dispatch('user/getInfo')
-
+          setDisplay(router.options.routes, [store.getters.status]);
           next()
         } catch (error) {
           // remove token and go to login page to re-login

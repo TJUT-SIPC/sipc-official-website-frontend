@@ -9,8 +9,8 @@
           v-model="projectForm.time"
           type="date"
           placeholder="选择日期"
-          format="yyyy-MM-dd"
-          value-format="yyyy-MM-dd"
+          format="yyyy/MM/dd"
+          value-format="yyyy/MM/dd"
         />
       </el-form-item>
       <el-form-item prop="image" label="项目图片">
@@ -21,7 +21,7 @@
           :show-file-list="false"
           :before-upload="beforeImageUpload"
         >
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <img v-if="imageUrl" :src="baseUrl + '/' + imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
       </el-form-item>
@@ -33,8 +33,9 @@
 </template>
 
 <script>
-import { addProject } from '@/api/project'
+import { addProject,uploadProjectImage } from '@/api/project'
 import projectRule from '@/views/project/rules/index'
+import service from '@/utils/request'
 export default {
   name: 'ProjectAdd',
   data() {
@@ -43,18 +44,34 @@ export default {
         id: '',
         description: '',
         time: '',
-        image: null
+        rawImageURL: undefined,
+        compressImageURL: undefined
       },
-      form_data: new FormData(),
       imageUrl: '',
       submitLoading: false,
-      projectRule
+      projectRule,
+      baseUrl: service.defaults.baseURL
     }
   },
   methods: {
-    upLoad(file) {
-      this.projectForm.image = file.file;
-      this.imageUrl = URL.createObjectURL(file.file)
+    async upLoad(file) {
+      let formData = new FormData();
+      formData.append('projectImage', file.file);
+      let req = await uploadProjectImage(formData);
+      if (Number(req.code) === 0) {
+          this.projectForm.compressImageURL = req.data.image_compress;
+          this.projectForm.rawImageURL = req.data.image_raw;
+          this.imageUrl = req.data.image_compress;
+          this.$message({
+            type: "success",
+            message: "上传成功"
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: "上传失败"
+          });
+        }
     },
     beforeImageUpload(file) {
       const isJPG = file.type === 'image/jpeg'
@@ -74,10 +91,7 @@ export default {
       this.$refs['projectForm'].validate(async(valid) => {
         if (valid) {
           this.submitLoading = true
-          Object.keys(this.projectForm).forEach(item => {
-            this.form_data.append(item, this.projectForm[item]);
-          })
-          const req = await addProject(this.form_data)
+          const req = await addProject(this.projectForm)
           if (req.code === 0) {
             this.$message.success(req.msg)
           } else {

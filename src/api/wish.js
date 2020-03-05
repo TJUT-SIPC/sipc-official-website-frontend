@@ -16,7 +16,7 @@ export function modifyWish(id, status) {
   return request({
     url: '/wishCenter/modifyWish',
     method: 'post',
-    data: {
+    params: {
       id,
       status
     }
@@ -27,7 +27,7 @@ export function delWish(id) {
   return request({
     url: '/wishCenter/delWish',
     method: 'post',
-    data: {
+    params: {
       id
     }
   })

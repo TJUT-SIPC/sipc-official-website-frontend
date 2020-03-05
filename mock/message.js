@@ -23,7 +23,7 @@ export default [
     url: "/messageCenter/getMessage",
     type: "post",
     response: data => {
-      const { page, pageSize } = data.body;
+      const { page, pageSize } = data.query;
       const msg = {
         code: 0,
         msg: "success",

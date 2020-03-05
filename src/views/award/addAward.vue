@@ -1,7 +1,7 @@
 <template>
   <div id="AddAward">
-    <el-form ref="form" class="AddAward" :model="form">
-      <el-form-item label="项目名称">
+    <el-form ref="form" class="AddAward" :model="form" :rules="awardRule">
+      <el-form-item prop="name" label="项目名称">
         <el-input v-model="form.name" />
       </el-form-item>
       <el-form-item prop="time" label="时间">
@@ -9,8 +9,8 @@
           v-model="form.time"
           type="date"
           placeholder="选择日期"
-          format="yyyy-MM-dd"
-          value-format="yyyy-MM-dd"
+          format="yyyy/MM/dd"
+          value-format="yyyy/MM/dd"
         />
       </el-form-item>
       <el-form-item>
@@ -22,6 +22,7 @@
 
 <script>
 import { addAward } from '@/api/award'
+import awardRule from '@/views/award/rules/index'
 export default {
   name: 'AddAward',
   data() {
@@ -30,7 +31,8 @@ export default {
         name: '',
         time: ''
       },
-      submitLoading: false
+      submitLoading: false,
+      awardRule
     }
   },
   methods: {

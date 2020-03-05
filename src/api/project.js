@@ -14,7 +14,7 @@ export function modifyProject(data) {
   return request({
     url: '/projectCenter/modifyProject',
     method: 'post',
-    data
+    params: data
   })
 }
 
@@ -22,7 +22,7 @@ export function delProject(id) {
   return request({
     url: '/projectCenter/delProject',
     method: 'post',
-    data: {
+    params: {
       id
     }
   })
@@ -32,10 +32,7 @@ export function addProject(data) {
   return request({
     url: '/projectCenter/addProject',
     method: 'post',
-    data,
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+    params: data
   })
 }
 

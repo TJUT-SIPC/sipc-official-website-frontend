@@ -41,7 +41,7 @@ export function editSubmit(data) {
   return request({
     url: '/userCenter/modifyUser',
     method: 'post',
-    data
+    params: data
   })
 }
 
@@ -49,9 +49,17 @@ export function deleteUser(id) {
   return request({
     url: '/userCenter/delUser',
     method: 'post',
-    data: {
+    params: {
       id
     }
+  })
+}
+
+export function addUser(data) {
+  return request({
+    url: '/userCenter/addUser',
+    method: 'post',
+    params: data
   })
 }
 

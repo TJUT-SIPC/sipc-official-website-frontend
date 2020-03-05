@@ -82,7 +82,6 @@ export default [
     url: "/uploadDynamicImage",
     type: "post",
     response: data => {
-      console.log(data.body);
       return {
         code: 0,
         msg: "success",

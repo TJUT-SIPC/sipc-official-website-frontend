@@ -57,7 +57,7 @@ export default {
   methods: {
     async displayWishList(page, pageSize) {
       this.form_list = []
-      const data = await getAllWishes(page, pageSize)
+      const data = await getAllWishes(page, pageSize, 1)
       data.data.wishes_list.forEach((item, key) => {
         item.$index = key
         this.wishes_list.push(item)

@@ -19,7 +19,7 @@
       </el-table-column>
     </el-table>
     <el-dialog title="快速编辑" :visible.sync="editVisible">
-      <el-form ref="editData" v-loading="editLoading" :model="editData" label-width="80px">
+      <el-form ref="editData" v-loading="editLoading" :model="editData" label-width="80px" :rules="editRule">
         <el-form-item label="项目名字" prop="name">
           <el-input v-model="editData.name" placeholder="请输入名字" />
         </el-form-item>
@@ -28,8 +28,8 @@
             v-model="editData.time"
             type="date"
             placeholder="选择日期"
-            format="yyyy-MM-dd"
-            value-format="yyyy-MM-dd"
+            format="yyyy/MM/dd"
+            value-format="yyyy/MM/dd"
           />
         </el-form-item>
         <el-form-item>
@@ -64,6 +64,7 @@
 
 <script>
 import { getAllAwards, delAward, modifyAward } from '@/api/award'
+import editRule from '@/views/award/rules'
 export default {
   name: 'Award',
   data() {
@@ -78,6 +79,7 @@ export default {
         id: undefined,
         $index: undefined
       },
+      editRule,
       editVisible: false, // 快速编辑界面是否显示
       editLoading: false, // 快速编辑界面是否处于加载中
       deletePrompt: false, // 内联删除成员提醒界面
@@ -120,7 +122,6 @@ export default {
     quickEditProject(scope) {
       this.editData.$index = scope.$index
       this.editData.id = scope.row.id
-      this.editData.time = scope.row.time
       this.editData.name = scope.row.name
       this.editVisible = true
     },

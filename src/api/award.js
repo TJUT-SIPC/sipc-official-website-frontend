@@ -4,7 +4,7 @@ export function getAllAwards(page, pageSize) {
   return request({
     url: '/awardCenter/getAllAwards',
     method: 'post',
-    data: {
+    params: {
       page,
       pageSize
     }
@@ -15,7 +15,7 @@ export function addAward(data) {
   return request({
     url: '/awardCenter/addAward',
     method: 'post',
-    data
+    params: data,
   })
 }
 
@@ -23,7 +23,7 @@ export function modifyAward(data) {
   return request({
     url: '/awardCenter/modifyAward',
     method: 'post',
-    data
+    params: data
   })
 }
 
@@ -31,7 +31,7 @@ export function delAward(id) {
   return request({
     url: '/awardCenter/delAward',
     method: 'post',
-    data: {
+    params: {
       id
     }
   })

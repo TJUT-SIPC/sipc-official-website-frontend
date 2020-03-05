@@ -28,9 +28,9 @@
       </el-table-column>
     </el-table>
     <el-dialog title="快速编辑" :visible.sync="editVisible">
-      <el-form ref="editData" v-loading="editLoading" :model="editData" label-width="80px">
+      <el-form ref="editData" v-loading="editLoading" :model="editData" label-width="80px" :rules="editRule">
         <el-form-item>
-          <el-form-item label="标题">
+          <el-form-item label="标题" prop="header">
             <el-input v-model="editData.header" />
           </el-form-item>
         </el-form-item>
@@ -67,6 +67,7 @@
 <script>
 import { modifyDynamic, delDynamic, getDynamics } from '@/api/dynamic'
 import { dynamicFilter } from '@/views/dynamic/filter/dynamicFilter'
+import editRule from '@/views/dynamic/rules/quickEdit'
 export default {
   name: 'DynamicsTable',
   filters: {
@@ -88,6 +89,7 @@ export default {
         editor: '',
         $index: 0
       },
+      editRule,
       deletePrompt: false, // 内联删除成员提醒界面
       deletePrompt_data: {
         $index: 0,
@@ -101,7 +103,7 @@ export default {
   methods: {
     displayDynamicsList(page, pageSize, status) {
       getDynamics(page, pageSize, status).then(data => {
-        data.data.dynamics_list.forEach((item, key) => {
+        data.data.dynamic_list.forEach((item, key) => {
           item.$index = key
           this.dynamics_list.push(item)
         })
@@ -118,14 +120,14 @@ export default {
         text: scope.row.text,
         header: scope.row.header,
         time: scope.row.time,
-        image: scope.row.image
+        image: scope.row.imgage
       }})
     },
     quickEdit(scope) {
       this.editData.id = scope.row.id
       this.editData.header = scope.row.header
       this.editData.text = scope.row.text
-      this.editData.image = scope.row.image
+      this.editData.image = scope.row.img
       this.editData.editor = scope.row.editor
       this.editData.time = scope.row.time
       this.editVisible = true

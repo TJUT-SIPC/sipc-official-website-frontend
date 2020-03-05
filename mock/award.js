@@ -19,7 +19,7 @@ export default [
     url: "/awardCenter/getAllAwards",
     type: "post",
     response: data => {
-      const { page, pageSize } = data.body;
+      const { page, pageSize } = data.query;
       const msg = {
         code: 0,
         msg: "success",

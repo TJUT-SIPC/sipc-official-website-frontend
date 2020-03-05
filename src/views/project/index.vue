@@ -30,8 +30,8 @@
             v-model="editData.time"
             type="date"
             placeholder="选择日期"
-            format="yyyy-MM-dd"
-            value-format="yyyy-MM-dd"
+            format="yyyy/MM/dd"
+            value-format="yyyy/MM/dd"
           />
         </el-form-item>
         <el-form-item label="项目图片" prop="image">
@@ -42,7 +42,7 @@
             :show-file-list="false"
             :before-upload="beforeImageUpload"
           >
-            <img v-if="editData.compressImage" :src="editData.compressImage" class="avatar">
+            <img v-if="editData.compressImageURL" :src="baseUrl + '/' + editData.compressImage" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
@@ -72,6 +72,7 @@
 <script>
 import projectRule from '@/views/project/rules/index'
 import { modifyProject, delProject, uploadProjectImage, getProjects } from '@/api/project'
+import service from '@/utils/request'
 export default {
   name: 'Project',
   data() {
@@ -88,11 +89,12 @@ export default {
         id: undefined,
         description: '',
         time: '',
-        compressImage: '',
-        rawImage: '',
+        compressImageURL: '',
+        rawImageURL: '',
         $index: 0
       },
-      projectRule
+      projectRule,
+      baseUrl: service.defaults.baseURL
     }
   },
   // 进入编辑后会触发一次，点击返回还会执行一次
@@ -113,7 +115,7 @@ export default {
     },
     async upLoad(file) {
       const formData = new FormData()
-      formData.append('file', file.file)
+      formData.append('projectImage', file.file)
       try {
         const req = await uploadProjectImage(formData)
         if (Number(req.code) === 0) {
@@ -163,9 +165,8 @@ export default {
       this.editData.$index = scope.$index
       this.editData.id = scope.row.id
       this.editData.description = scope.row.description
-      this.editData.time = scope.row.time
-      this.editData.compressImage = scope.row.image.compress;
-      this.editData.rawImage = scope.row.image.raw;
+      this.editData.compressImageURL = scope.row.img.compress;
+      this.editData.rawImageURL = scope.row.img.raw;
       this.editVisible = true
     },
     openDeletePrompt(scope) {

@@ -18,12 +18,12 @@
           :on-error="handleAvatarError"
           :on-progress="handleAvatarError"
         >
-          <img v-if="profile.head_image" :src="profile.head_image" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon" />
+          <img v-show="profile.head_image" :src="baseUrl + '/' + profile.head_image" class="avatar">
+          <i v-show="!profile.head_image" class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
       </el-form-item>
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="profile.username" placeholder="请输入用户名" />
+        <el-input v-model="profile.name" placeholder="请输入用户名" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input v-model="profile.password" placeholder="请输入密码" />
@@ -64,16 +64,18 @@
         <el-input v-model="profile.remark" type="textarea" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="modifyUser">更改信息</el-button>
+        <el-button type="primary" @click="submitUser">提交</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-import { uploadHeadImage, editSubmit, getInfo } from '@/api/user'
+import { uploadHeadImage, editSubmit, getInfo, addUser } from '@/api/user'
 import { statusFilter } from './filter/index'
 import editDataRules from './rules/index'
+import { getId } from '@/utils/auth'
+import service from '@/utils/request'
 export default {
   name: 'Profile',
   filters: {
@@ -84,7 +86,7 @@ export default {
       title: '',
       profile: {
         id: undefined,
-        username: '',
+        name: '',
         password: '',
         age: '',
         gender: '',
@@ -100,14 +102,16 @@ export default {
         { value: '女', label: '女' }
       ],
       profile_status: [0, 1, 2],
-      editDataRules
+      editDataRules,
+      baseUrl: service.defaults.baseURL
     }
   },
   created() {
     if (this.$route.name === 'profile') {
-      this.displayInit(this.$store.state.id)
+      this.displayInit(this.$store.getters.id || getId())
     } else if (this.$route.name === 'editUser') {
-      Object.keys(this.$route.params).forEach(item => {
+      console.log(this.$route)
+      Object.keys(this.profile).forEach(item => {
         this.profile[item] = this.$route.params[item]
       })
     }
@@ -115,11 +119,11 @@ export default {
   methods: {
     async upLoad(file) {
       const formData = new FormData()
-      formData.append('file', file.file)
+      formData.append('headImage', file.file)
       try {
         const req = await uploadHeadImage(formData)
         if (Number(req.code) === 0) {
-          this.profile.head_image = req.data.image_raw
+          this.profile.head_image = req.data.image_compress
           this.$message({
             type: 'success',
             message: '上传成功'
@@ -160,11 +164,30 @@ export default {
     handleAvatarError(err) {
       console.log(err)
     },
+    submitUser() {
+      if (this.$route.name === 'profile' || this.$route.name === 'editUser') {
+        this.modifyUser();
+      } else if (this.$route.name === 'addUser') {
+        this.addUser();
+      }
+    },
     modifyUser() {
       this.$refs['profile'].validate(async(valid) => {
         if (valid) {
           this.modifyLoading = true
           const req = await editSubmit(this.profile)
+          this.modifyLoading = false
+          this.$message.success(req.msg)
+        } else {
+          return false
+        }
+      })
+    },
+    addUser() {
+      this.$refs['profile'].validate(async(valid) => {
+        if (valid) {
+          this.modifyLoading = true
+          const req = await addUser(this.profile)
           this.modifyLoading = false
           this.$message.success(req.msg)
         } else {

@@ -15,7 +15,7 @@ export function modifyDynamic(data) {
   return request({
     url: '/dynamicCenter/modifyDynamic',
     method: 'post',
-    data
+    params: data
   })
 }
 
@@ -23,7 +23,7 @@ export function delDynamic(id) {
   return request({
     url: '/dynamicCenter/delDynamic',
     method: 'post',
-    data: {
+    params: {
       id
     }
   })
@@ -33,7 +33,7 @@ export function addDynamic(data) {
   return request({
     url: '/dynamicCenter/addDynamic',
     method: 'post',
-    data
+    params: data
   })
 }
 

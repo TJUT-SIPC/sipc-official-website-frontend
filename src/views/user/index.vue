@@ -7,7 +7,7 @@
           <div @mouseenter="openInlineOperate(scope)" @mouseleave="closeInlineOperate(scope)">
             <el-row>
               <el-col :span="4">
-                <img class="head_image" :src="scope.row.head_image" alt>
+                <img class="head_image" :src="baseUrl + '/' + scope.row.head_image" alt>
               </el-col>
               <el-col :span="20">
                 {{ scope.row.username }}
@@ -31,7 +31,7 @@
     <el-dialog title="快速编辑" :visible.sync="editVisible">
       <el-form ref="editData" v-loading="editLoading" :model="editData" :rules="editDataRules" label-width="80px">
         <el-form-item prop="username" label="用户名">
-          <el-input v-model="editData.username" placeholder="请输入用户名" />
+          <el-input v-model="editData.name" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item prop="email" label="邮箱">
           <el-input v-model="editData.email" placeholder="请输入邮箱" />
@@ -76,7 +76,7 @@
 import { getUserList, editSubmit, deleteUser } from '@/api/user'
 import editDataRules from '@/views/user/rules/index'
 import { statusFilter } from '@/views/user/filter/index'
-
+import service from '@/utils/request'
 export default {
   name: 'User',
   filters: {
@@ -96,13 +96,14 @@ export default {
       status: [0, 1, 2], // 权限
       editData: { // 快速编辑中的表单
         id: undefined,
-        username: '',
+        name: '',
         password: '',
         email: '',
         phone: '',
         status: 0,
         $index: 0
-      }
+      },
+      baseUrl: service.defaults.baseURL
     }
   },
   // 进入编辑后会触发一次，点击返回还会执行一次
@@ -129,7 +130,7 @@ export default {
     },
     quickEditUser(scope) {
       this.editData.id = scope.row.id
-      this.editData.username = scope.row.username
+      this.editData.name = scope.row.username
       this.editData.email = scope.row.email
       this.editData.status = scope.row.status
       this.editData.phone = scope.row.phone
@@ -182,7 +183,7 @@ export default {
       this.editVisible = false
     },
     displayUserList(page, pageSize, status) {
-      getUserList(page, pageSize, status).then(data => {
+      getUserList(page, pageSize, 3).then(data => {
         data.data.users_list.forEach((item, key) => {
           item.$index = key
           this.users_list.push(item)

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import store from '../store'
 Vue.use(Router)
 
 /* Layout */
@@ -30,6 +30,7 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+
 export const constantRoutes = [
   {
     path: '/login',
@@ -57,13 +58,13 @@ export const constantRoutes = [
   {
     path: '/user',
     component: Layout,
-    meta: { title: '用户', icon: 'user' },
+    meta: { title: '用户', icon: 'user'},
     children: [
       {
         path: 'allUser',
         name: 'user',
         component: () => import('@/views/user/index'),
-        meta: { title: '所有用户', icon: 'user' }
+        meta: { title: '所有用户', icon: 'user', roles: [2]}
       },
       {
         path: 'edit',
@@ -81,7 +82,7 @@ export const constantRoutes = [
         path: 'addUser',
         name: 'addUser',
         component: () => import('@/views/user/profile'),
-        meta: { title: '添加用户', icon: 'plus' }
+        meta: { title: '添加用户', icon: 'plus', roles: [2] }
       }
     ]
   },
