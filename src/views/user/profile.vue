@@ -23,7 +23,7 @@
         </el-upload>
       </el-form-item>
       <el-form-item label="用户名" prop="name">
-        <el-input v-model="profile.name" placeholder="请输入用户名" />
+        <el-input v-model="profile.name" :disabled="(this.$store.state.user.status != 2)" placeholder="请输入用户名" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input v-model="profile.password" placeholder="请输入密码" />
@@ -51,7 +51,7 @@
         <el-input v-model="profile.email" placeholder="请输入邮箱" />
       </el-form-item>
       <el-form-item label="用户权限" prop="status">
-        <el-select v-model="profile.status" placeholder="请选择">
+        <el-select v-model="profile.status" :disabled="(this.$store.state.user.status != 2)" placeholder="请选择">
           <el-option
             v-for="item in profile_status"
             :key="item"

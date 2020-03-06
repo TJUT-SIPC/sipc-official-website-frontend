@@ -46,7 +46,7 @@ export default {
       page_size: 9,
       total: 0,
       current_page: 1,
-      status: ['0', '1', '2', '3'],
+      status: [0, 1, 2, 3],
       form_list: [],
       wishes_list: []
     }
@@ -57,7 +57,7 @@ export default {
   methods: {
     async displayWishList(page, pageSize) {
       this.form_list = []
-      const data = await getAllWishes(page, pageSize, 1)
+      const data = await getAllWishes(page, pageSize, 4)
       data.data.wishes_list.forEach((item, key) => {
         item.$index = key
         this.wishes_list.push(item)
