@@ -18,11 +18,11 @@
           :on-error="handleAvatarError"
           :on-progress="handleAvatarError"
         >
-          <img v-show="profile.head_image" :src="baseUrl + '/' + profile.head_image" class="avatar">
+          <img v-show="profile.head_image" :src="baseUrl + '/' +profile.head_image" class="avatar">
           <i v-show="!profile.head_image" class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
       </el-form-item>
-      <el-form-item label="用户名" prop="username">
+      <el-form-item label="用户名" prop="name">
         <el-input v-model="profile.name" placeholder="请输入用户名" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
@@ -108,11 +108,17 @@ export default {
   },
   created() {
     if (this.$route.name === 'profile') {
-      this.displayInit(this.$store.getters.id || getId())
+      this.displayInit(this.$store.state.user.id)
     } else if (this.$route.name === 'editUser') {
-      console.log(this.$route)
       Object.keys(this.profile).forEach(item => {
-        this.profile[item] = this.$route.params[item]
+        if (item == 'name') {
+          this.profile.name = this.$route.params.username;
+        } else {
+          this.profile[item] = this.$route.params[item]
+        }
+        if (item == 'head_image') {
+          this.profile.head_image = (this.$route.params[item].replace(/\w+:\/\/\d+\.\d+\.\d+\.\d+:\d+\//, ''))
+        }
       })
     }
   },
@@ -144,7 +150,16 @@ export default {
     async displayInit(id) {
       const req = await getInfo(id)
       Object.keys(req.data).forEach(item => {
-        this.profile[item] = req.data[item]
+        
+        if (item == 'username') {
+          this.profile['name'] = req.data[item]
+        } else {
+          this.profile[item] = req.data[item]
+        }
+        if (item == 'head_image') {
+          this.profile['head_image'] = req.data[item].replace(/\w+:\/\/\d+\.\d+\.\d+\.\d+:\d+\//, '')
+          // console.log(req.data[item].replace(/\w+:\/\/\d+\.\d+\.\d+\.\d+:\d+\//, ''))
+        }
       })
     },
     beforeAvatarUpload(file) {
@@ -177,7 +192,11 @@ export default {
           this.modifyLoading = true
           const req = await editSubmit(this.profile)
           this.modifyLoading = false
-          this.$message.success(req.msg)
+          if (req.code == 0) {
+            this.$message.success(req.msg)
+          } else {
+            this.$message.error(req.msg)
+          }
         } else {
           return false
         }
@@ -189,7 +208,11 @@ export default {
           this.modifyLoading = true
           const req = await addUser(this.profile)
           this.modifyLoading = false
-          this.$message.success(req.msg)
+          if (req.code == 0) {
+            this.$message.success(req.msg)
+          } else {
+            this.$message.error(req.msg)
+          }
         } else {
           return false
         }

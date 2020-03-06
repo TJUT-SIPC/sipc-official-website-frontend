@@ -30,7 +30,7 @@
     </el-table>
     <el-dialog title="快速编辑" :visible.sync="editVisible">
       <el-form ref="editData" v-loading="editLoading" :model="editData" :rules="editDataRules" label-width="80px">
-        <el-form-item prop="username" label="用户名">
+        <el-form-item prop="name" label="用户名">
           <el-input v-model="editData.name" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item prop="email" label="邮箱">

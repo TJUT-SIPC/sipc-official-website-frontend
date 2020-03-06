@@ -69,7 +69,7 @@ export default {
         text: "",
         image: "",
         time: "",
-        editor: this.$store.getters.username
+        editor: ""
       },
       editRule,
       init: {
@@ -92,7 +92,6 @@ export default {
     async upLoad(file) {
       const formData = new FormData();
       formData.append("dynamicImage", file.file);
-      // console.log(formData.get("file"));
       try {
         const req = await uploadDynamicImage(formData);
         if (Number(req.code) === 0) {

@@ -5,8 +5,8 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: '/proxy',
-  //baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  // baseURL: '',
+  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
@@ -46,7 +46,7 @@ service.interceptors.response.use(
     const res = response.data
 
     // if the custom code is not 0, 1000, 1001, 1002, it is judged as an error.
-    if (res.code !== 0 && res.code !== 1000 && res.code !== 1001 && res.code !== 1002) {
+    if (res.code !== 0 && res.code !== 1 && res.code !== 2 && res.code !== 3 && res.code !== 4 && res.code !== 5 && res.code !== 6 && res.code !== 1000 && res.code !== 1001 && res.code !== 1002) {
       Message({
         message: res.message || 'Error',
         type: 'error',

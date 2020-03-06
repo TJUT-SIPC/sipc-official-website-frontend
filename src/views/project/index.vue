@@ -4,26 +4,38 @@
       <el-table-column type="selection" width="55" />
       <el-table-column label="项目描述" width="300">
         <template slot-scope="scope">
-          <div
+          <!-- <div
             class="inline"
             @mouseenter="openInlineOperate(scope)"
             @mouseleave="closeInlineOperate(scope)"
-          >
+          > -->
             {{ introduce(scope.row.description) }}
-            <ul class="operate-inline">
+            <!-- <ul class="operate-inline">
               <li @click="quickEditProject(scope)">快速编辑</li>
               <li @click="openDeletePrompt(scope)">删除</li>
               <div class="clear" />
-            </ul>
-          </div>
+            </ul> -->
+          <!-- </div> -->
         </template>
       </el-table-column>
       <el-table-column label="时间" prop="time" />
+      <el-table-column label="操作" width="350">
+        <template slot-scope="scope">
+          <el-row :gutter="1">
+            <el-col :span="12">
+              <el-button type="primary" @click="quickEditProject(scope)">快速编辑</el-button>
+            </el-col>
+            <el-col :span="12">
+              <el-button type="danger" @click="openDeletePrompt(scope)">删除</el-button>
+            </el-col>
+          </el-row>
+        </template>
+      </el-table-column>
     </el-table>
     <el-dialog title="快速编辑" :visible.sync="editVisible">
       <el-form ref="editData" v-loading="editLoading" :model="editData" :rules="projectRule" label-width="80px">
         <el-form-item prop="description" label="项目描述">
-          <el-input v-model="editData.description" type="textarea" placeholder="请输入用户名" />
+          <el-input v-model="editData.description" type="textarea" placeholder="项目描述" />
         </el-form-item>
         <el-form-item prop="time" label="时间">
           <el-date-picker
@@ -42,7 +54,7 @@
             :show-file-list="false"
             :before-upload="beforeImageUpload"
           >
-            <img v-if="editData.compressImageURL" :src="baseUrl + '/' + editData.compressImage" class="avatar">
+            <img v-if="editData.compressImageURL" :src="baseUrl + '/' + editData.compressImageURL" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
         </el-form-item>
@@ -119,8 +131,8 @@ export default {
       try {
         const req = await uploadProjectImage(formData)
         if (Number(req.code) === 0) {
-          this.editData.compressImage = req.data.image_compress
-          this.editData.rowImage = req.data.image_raw
+          this.editData.compressImageURL = req.data.image_compress
+          this.editData.rawImageURL = req.data.image_raw
           this.$message({
             type: 'success',
             message: '上传成功'
@@ -165,8 +177,8 @@ export default {
       this.editData.$index = scope.$index
       this.editData.id = scope.row.id
       this.editData.description = scope.row.description
-      this.editData.compressImageURL = scope.row.img.compress;
-      this.editData.rawImageURL = scope.row.img.raw;
+      this.editData.compressImageURL = scope.row.img.compress.replace(/\w+:\/\/\d+\.\d+\.\d+\.\d+:\d+\//, '')
+      this.editData.rawImageURL = scope.row.img.raw.replace(/\w+:\/\/\d+\.\d+\.\d+\.\d+:\d+\//, '')
       this.editVisible = true
     },
     openDeletePrompt(scope) {

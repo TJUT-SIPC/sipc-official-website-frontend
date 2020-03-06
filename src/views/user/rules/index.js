@@ -13,14 +13,15 @@ export default {
     { type: 'string', required: true, message: '邮箱不合法', pattern: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/ }
   ],
   phone: [
-    { required: true, message: '手机号不合法', pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/ }
+    { required: false, message: '手机号不合法', pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/ }
   ],
   status: [
     { required: true, message: '不能为空' }
   ],
   student_id: [
-    { pattern: /[0-9]+/, message: '学号为数字' },
-    { min: 8, max: 8, message: '学号为8位数字' }
+    { required: true },
+    { pattern: /[0-9]+/, message: '学号为数字', trigger: 'blur'},
+    { min: 8, max: 8, message: '学号为8位数字', trigger: 'blur' }
   ]
 
 }
