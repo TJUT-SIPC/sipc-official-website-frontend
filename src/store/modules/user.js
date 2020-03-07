@@ -81,7 +81,7 @@ const actions = {
           }
           const { status, head_image, username } = response.data;
           commit("SET_NAME", username);
-          commit("SET_AVATAR", head_image.replace(/\w+:\/\/\d+\.\d+\.\d+\.\d+:\d+\//, ''));
+          commit("SET_AVATAR", head_image.replace(/(http:\/\/||https:\/\/)/,'').split('/').splice(1).toString().replace(/,/g,'/'));
           commit("SET_STATUS", status);
           commit("SET_ID", getId());
           resolve(data);

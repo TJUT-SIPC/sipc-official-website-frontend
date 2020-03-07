@@ -117,7 +117,7 @@ export default {
           this.profile[item] = this.$route.params[item]
         }
         if (item == 'head_image') {
-          this.profile.head_image = (this.$route.params[item].replace(/\w+:\/\/\d+\.\d+\.\d+\.\d+:\d+\//, ''))
+          this.profile.head_image = (this.$route.params[item].replace(/(http:\/\/||https:\/\/)/,'').split('/').splice(1).toString().replace(/,/g,'/'))
         }
       })
     }
@@ -157,7 +157,7 @@ export default {
           this.profile[item] = req.data[item]
         }
         if (item == 'head_image') {
-          this.profile['head_image'] = req.data[item].replace(/\w+:\/\/\d+\.\d+\.\d+\.\d+:\d+\//, '')
+          this.profile['head_image'] = req.data[item].replace(/(http:\/\/||https:\/\/)/,'').split('/').splice(1).toString().replace(/,/g,'/')
           // console.log(req.data[item].replace(/\w+:\/\/\d+\.\d+\.\d+\.\d+:\d+\//, ''))
         }
       })

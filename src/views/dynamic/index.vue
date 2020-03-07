@@ -120,7 +120,7 @@ export default {
         text: scope.row.text,
         header: scope.row.header,
         time: scope.row.time,
-        image: scope.row.image.replace(/\w+:\/\/\d+\.\d+\.\d+\.\d+:\d+\//, '')
+        image: scope.row.image.replace(/(http:\/\/||https:\/\/)/,'').split('/').splice(1).toString().replace(/,/g,'/')
       }})
     },
     quickEdit(scope) {

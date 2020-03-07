@@ -177,8 +177,8 @@ export default {
       this.editData.$index = scope.$index
       this.editData.id = scope.row.id
       this.editData.description = scope.row.description
-      this.editData.compressImageURL = scope.row.img.compress.replace(/\w+:\/\/\d+\.\d+\.\d+\.\d+:\d+\//, '')
-      this.editData.rawImageURL = scope.row.img.raw.replace(/\w+:\/\/\d+\.\d+\.\d+\.\d+:\d+\//, '')
+      this.editData.compressImageURL = scope.row.img.compress.replace(/(http:\/\/||https:\/\/)/,'').split('/').splice(1).toString().replace(/,/g,'/')
+      this.editData.rawImageURL = scope.row.img.raw.replace(/(http:\/\/||https:\/\/)/,'').split('/').splice(1).toString().replace(/,/g,'/')
       this.editVisible = true
     },
     openDeletePrompt(scope) {
